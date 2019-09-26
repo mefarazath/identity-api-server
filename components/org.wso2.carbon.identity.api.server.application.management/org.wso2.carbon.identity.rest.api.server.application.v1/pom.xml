@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.wso2.carbon.identity.server.api</groupId>
+        <artifactId>org.wso2.carbon.identity.api.server.application.management</artifactId>
+        <version>1.0.26-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <name>WSO2 Identity Server - Applications Rest API</name>
+    <description>WSO2 Identity Server - Applications Rest API</description>
+    <artifactId>org.wso2.carbon.identity.rest.api.server.application.v1</artifactId>
+    <version>1.0.26-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.wso2.maven.plugins</groupId>-->
+<!--                <artifactId>swagger2cxf-maven-plugin</artifactId>-->
+<!--                <version>1.0-SNAPSHOT</version>-->
+<!--                <configuration>-->
+<!--                    <inputSpec>${project.basedir}/src/main/resources/applications.yaml</inputSpec>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/gen/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

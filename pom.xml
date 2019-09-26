@@ -355,6 +355,7 @@
         <module>components/org.wso2.carbon.identity.api.server.workflow.engine</module>
         <module>components/org.wso2.carbon.identity.api.server.permission.management</module>
         <module>components/org.wso2.carbon.identity.api.server.email.template</module>
+        <module>components/org.wso2.carbon.identity.api.server.application.management</module>
     </modules>
 
 </project>
