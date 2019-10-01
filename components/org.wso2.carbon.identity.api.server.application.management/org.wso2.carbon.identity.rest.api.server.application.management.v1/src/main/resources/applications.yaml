@@ -32,14 +32,11 @@ paths:
     get:
       tags:
         - Applications
-      operationId: getApplications
+      operationId: getAllApplications
       summary: |
         List applications
       description: |
         This API provides the capability to retrive the list of applications.
-      produces:
-        - application/json
-        - application/xml
       parameters:
         - $ref : '#/parameters/limitQueryParam'
         - $ref : '#/parameters/offsetQueryParam'
@@ -184,6 +181,9 @@ paths:
       description: >
         This API provides the capability to retrive the application information
         by id.
+      produces:
+        - application/json
+        - application/xml
       parameters:
         - name: applicationId
           in: path

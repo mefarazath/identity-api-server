@@ -15,9 +15,60 @@
  */
 package org.wso2.carbon.identity.rest.api.server.application.management.v1.core;
 
+import org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementServiceHolder;
+import org.wso2.carbon.identity.api.server.common.ContextLoader;
+import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
+import org.wso2.carbon.identity.application.common.model.ApplicationBasicInfo;
+import org.wso2.carbon.identity.rest.api.server.application.management.v1.dto.ApplicationBasicInfoDTO;
+import org.wso2.carbon.identity.rest.api.server.application.management.v1.dto.ApplicationListResponseDTO;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Calls internal osgi services to perform server application management related operations.
  */
 public class ServerApplicationManagementService {
+
+    public ApplicationListResponseDTO getAllApplications(Integer limit,
+                                                         Integer offset,
+                                                         String filter,
+                                                         String sort,
+                                                         String sortBy,
+                                                         String requiredAttributes) {
+
+        ApplicationListResponseDTO applicationListResponseDTO = new ApplicationListResponseDTO();
+
+        try {
+            ApplicationBasicInfo[] allApplicationBasicInfo =
+                    ApplicationManagementServiceHolder.getApplicationManagementService().getAllApplicationBasicInfo(
+                            ContextLoader.getUsernameFromContext(),
+                            ContextLoader.getTenantDomainFromContext()
+                    );
+
+            applicationListResponseDTO.setApplications(getApplicationListItemDTOs(allApplicationBasicInfo));
+            applicationListResponseDTO.setTotalResults(allApplicationBasicInfo.length);
+        } catch (IdentityApplicationManagementException e) {
+            //
+        }
+
+        return applicationListResponseDTO;
+    }
+
+    private List<ApplicationBasicInfoDTO> getApplicationListItemDTOs(ApplicationBasicInfo[] allApplicationBasicInfo) {
+
+        List<ApplicationBasicInfoDTO> apps = new ArrayList<>();
+
+        for (ApplicationBasicInfo appBasicInfo : allApplicationBasicInfo) {
+
+            ApplicationBasicInfoDTO dto = new ApplicationBasicInfoDTO();
+            dto.setId(String.valueOf(appBasicInfo.getApplicationId()));
+            dto.setDescription(appBasicInfo.getDescription());
+            dto.setName(appBasicInfo.getApplicationName());
+            apps.add(dto);
+        }
+
+        return apps;
+    }
 
 }

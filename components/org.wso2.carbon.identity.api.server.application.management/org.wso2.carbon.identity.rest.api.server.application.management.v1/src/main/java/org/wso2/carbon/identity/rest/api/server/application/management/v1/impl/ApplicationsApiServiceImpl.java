@@ -44,14 +44,16 @@ public class ApplicationsApiServiceImpl extends ApplicationsApiService {
     private ServerApplicationManagementService applicationManagementService;
 
     @Override
-    public Response getApplications(Integer limit,
-                                    Integer offset,
-                                    String filter,
-                                    String sort,
-                                    String sortBy,
-                                    String requiredAttributes) {
+    public Response getAllApplications(Integer limit,
+                                       Integer offset,
+                                       String filter,
+                                       String sort,
+                                       String sortBy,
+                                       String requiredAttributes) {
 
-        return Response.ok().entity("Response From getApplications!!!!!").build();
+        return Response.ok().entity(applicationManagementService
+                .getAllApplications(limit, offset, filter, sort, sortBy, requiredAttributes))
+                .build();
     }
 
     @Override
