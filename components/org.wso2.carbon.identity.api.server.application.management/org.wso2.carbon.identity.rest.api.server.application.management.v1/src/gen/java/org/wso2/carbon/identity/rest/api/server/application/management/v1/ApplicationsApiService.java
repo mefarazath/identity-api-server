@@ -68,8 +68,8 @@ public abstract class ApplicationsApiService {
     public abstract Response deletePassiveStsConfiguration(String applicationId);
     public abstract Response deleteWSTrustConfiguration(String applicationId);
     public abstract Response getAdvancedConfigurations(String applicationId);
+    public abstract Response getAllApplications(Integer limit,Integer offset,String filter,String sort,String sortBy,String requiredAttributes);
     public abstract Response getApplication(String applicationId);
-    public abstract Response getApplications(Integer limit,Integer offset,String filter,String sort,String sortBy,String requiredAttributes);
     public abstract Response getInboundAuthenticationConfigurations(String applicationId);
     public abstract Response getInboundOAuthConfiguration(String applicationId);
     public abstract Response getInboundSAMLConfiguration(String applicationId);

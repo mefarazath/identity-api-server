@@ -635,9 +635,37 @@ public class ApplicationsApi  {
     }
     @Valid
     @GET
-    @Path("/{applicationId}")
+    
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "List applications\n", notes = "This API provides the capability to retrive the list of applications.\n", response = ApplicationListResponseDTO.class)
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK"),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request"),
+        
+        @io.swagger.annotations.ApiResponse(code = 401, message = "Unauthorized"),
+        
+        @io.swagger.annotations.ApiResponse(code = 403, message = "Forbidden"),
+        
+        @io.swagger.annotations.ApiResponse(code = 404, message = "Not Found"),
+        
+        @io.swagger.annotations.ApiResponse(code = 500, message = "Server Error") })
+
+    public Response getAllApplications(@ApiParam(value = "Maximum number of records to return.\n") @QueryParam("limit")  Integer limit,
+    @ApiParam(value = "Number of records to skip for pagination.\n") @QueryParam("offset")  Integer offset,
+    @ApiParam(value = "Condition to filter the retrival of records.\n") @QueryParam("filter")  String filter,
+    @ApiParam(value = "Define the order in which the retrieved records should be sorted.\n_This parameter is not supported yet._\n", allowableValues="{values=[asc, desc]}") @QueryParam("sort")  String sort,
+    @ApiParam(value = "Attribute by which the retrieved records should be sorted.\n_This parameter is not supported yet._\n") @QueryParam("sortBy")  String sortBy,
+    @ApiParam(value = "Specifies the required parameters in the response\n_This parameter is not supported yet_\n") @QueryParam("requiredAttributes")  String requiredAttributes)
+    {
+    return delegate.getAllApplications(limit,offset,filter,sort,sortBy,requiredAttributes);
+    }
+    @Valid
+    @GET
+    @Path("/{applicationId}")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json", "application/xml" })
     @io.swagger.annotations.ApiOperation(value = "Retrive application by id\n", notes = "This API provides the capability to retrive the application information by id.\n", response = ApplicationResponseDTO.class)
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "OK"),
@@ -655,34 +683,6 @@ public class ApplicationsApi  {
     public Response getApplication(@ApiParam(value = "Id of the application.",required=true ) @PathParam("applicationId")  String applicationId)
     {
     return delegate.getApplication(applicationId);
-    }
-    @Valid
-    @GET
-    
-    @Consumes({ "application/json" })
-    @Produces({ "application/json", "application/xml" })
-    @io.swagger.annotations.ApiOperation(value = "List applications\n", notes = "This API provides the capability to retrive the list of applications.\n", response = ApplicationListResponseDTO.class)
-    @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "OK"),
-        
-        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request"),
-        
-        @io.swagger.annotations.ApiResponse(code = 401, message = "Unauthorized"),
-        
-        @io.swagger.annotations.ApiResponse(code = 403, message = "Forbidden"),
-        
-        @io.swagger.annotations.ApiResponse(code = 404, message = "Not Found"),
-        
-        @io.swagger.annotations.ApiResponse(code = 500, message = "Server Error") })
-
-    public Response getApplications(@ApiParam(value = "Maximum number of records to return.\n") @QueryParam("limit")  Integer limit,
-    @ApiParam(value = "Number of records to skip for pagination.\n") @QueryParam("offset")  Integer offset,
-    @ApiParam(value = "Condition to filter the retrival of records.\n") @QueryParam("filter")  String filter,
-    @ApiParam(value = "Define the order in which the retrieved records should be sorted.\n_This parameter is not supported yet._\n", allowableValues="{values=[asc, desc]}") @QueryParam("sort")  String sort,
-    @ApiParam(value = "Attribute by which the retrieved records should be sorted.\n_This parameter is not supported yet._\n") @QueryParam("sortBy")  String sortBy,
-    @ApiParam(value = "Specifies the required parameters in the response\n_This parameter is not supported yet_\n") @QueryParam("requiredAttributes")  String requiredAttributes)
-    {
-    return delegate.getApplications(limit,offset,filter,sort,sortBy,requiredAttributes);
     }
     @Valid
     @GET
