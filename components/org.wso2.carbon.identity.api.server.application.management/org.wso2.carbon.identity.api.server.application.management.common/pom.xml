@@ -7,23 +7,23 @@
     <parent>
         <groupId>org.wso2.carbon.identity.server.api</groupId>
         <artifactId>org.wso2.carbon.identity.api.server.application.management</artifactId>
-        <version>1.0.26-SNAPSHOT</version>
+        <version>1.0.30-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>org.wso2.carbon.identity.api.server.application.management.common</artifactId>
-    <version>1.0.26-SNAPSHOT</version>
+    <version>1.0.30-SNAPSHOT</version>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
-            <groupId>org.wso2.carbon.identity.framework</groupId>
-            <artifactId>org.wso2.carbon.identity.application.mgt</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.application.mgt</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
