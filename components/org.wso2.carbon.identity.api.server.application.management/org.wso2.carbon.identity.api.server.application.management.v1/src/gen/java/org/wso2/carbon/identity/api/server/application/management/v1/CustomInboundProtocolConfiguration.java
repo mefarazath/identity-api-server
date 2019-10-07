@@ -20,6 +20,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
+import org.wso2.carbon.identity.api.server.application.management.v1.Property;
 import javax.validation.constraints.*;
 
 
@@ -28,48 +31,59 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.*;
 
-public class RoleMapping  {
+public class CustomInboundProtocolConfiguration  {
   
-    private String localRole;
-    private String applicationRole;
+    private String name;
+    private List<Property> properties = null;
+
 
     /**
     **/
-    public RoleMapping localRole(String localRole) {
+    public CustomInboundProtocolConfiguration name(String name) {
 
-        this.localRole = localRole;
+        this.name = name;
         return this;
     }
     
-    @ApiModelProperty(example = "admin", value = "")
-    @JsonProperty("localRole")
+    @ApiModelProperty(example = "custom-wso2-inbound", required = true, value = "")
+    @JsonProperty("name")
     @Valid
-    public String getLocalRole() {
-        return localRole;
+    @NotNull(message = "Property name cannot be null.")
+
+    public String getName() {
+        return name;
     }
-    public void setLocalRole(String localRole) {
-        this.localRole = localRole;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
     **/
-    public RoleMapping applicationRole(String applicationRole) {
+    public CustomInboundProtocolConfiguration properties(List<Property> properties) {
 
-        this.applicationRole = applicationRole;
+        this.properties = properties;
         return this;
     }
     
-    @ApiModelProperty(example = "Administrator", value = "")
-    @JsonProperty("applicationRole")
+    @ApiModelProperty(value = "")
+    @JsonProperty("properties")
     @Valid
-    public String getApplicationRole() {
-        return applicationRole;
+    public List<Property> getProperties() {
+        return properties;
     }
-    public void setApplicationRole(String applicationRole) {
-        this.applicationRole = applicationRole;
+    public void setProperties(List<Property> properties) {
+        this.properties = properties;
     }
 
+    public CustomInboundProtocolConfiguration addPropertiesItem(Property propertiesItem) {
+        if (this.properties == null) {
+            this.properties = new ArrayList<>();
+        }
+        this.properties.add(propertiesItem);
+        return this;
+    }
 
+    
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -80,24 +94,24 @@ public class RoleMapping  {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        RoleMapping roleMapping = (RoleMapping) o;
-        return Objects.equals(this.localRole, roleMapping.localRole) &&
-            Objects.equals(this.applicationRole, roleMapping.applicationRole);
+        CustomInboundProtocolConfiguration customInboundProtocolConfiguration = (CustomInboundProtocolConfiguration) o;
+        return Objects.equals(this.name, customInboundProtocolConfiguration.name) &&
+            Objects.equals(this.properties, customInboundProtocolConfiguration.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(localRole, applicationRole);
+        return Objects.hash(name, properties);
     }
 
     @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("class RoleMapping {\n");
+        sb.append("class CustomInboundProtocolConfiguration {\n");
         
-        sb.append("    localRole: ").append(toIndentedString(localRole)).append("\n");
-        sb.append("    applicationRole: ").append(toIndentedString(applicationRole)).append("\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
         sb.append("}");
         return sb.toString();
     }

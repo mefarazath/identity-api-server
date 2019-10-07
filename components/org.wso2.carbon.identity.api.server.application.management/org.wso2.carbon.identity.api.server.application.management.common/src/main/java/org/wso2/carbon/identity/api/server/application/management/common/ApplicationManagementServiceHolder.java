@@ -16,6 +16,7 @@
 package org.wso2.carbon.identity.api.server.application.management.common;
 
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
+import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 
 /**
  * ApplicationManagementService OSGi service holder.
@@ -23,6 +24,8 @@ import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 public class ApplicationManagementServiceHolder {
 
     private static ApplicationManagementService applicationManagementService;
+
+    private static OAuthAdminServiceImpl oauthAdminService;
 
     public static ApplicationManagementService getApplicationManagementService() {
 
@@ -32,5 +35,15 @@ public class ApplicationManagementServiceHolder {
     public static void setApplicationManagementService(ApplicationManagementService applicationManagementService) {
 
         ApplicationManagementServiceHolder.applicationManagementService = applicationManagementService;
+    }
+
+    public static OAuthAdminServiceImpl getOAuthAdminService() {
+
+        return oauthAdminService;
+    }
+
+    public static void setOauthAdminService(OAuthAdminServiceImpl oauthAdminService) {
+
+        ApplicationManagementServiceHolder.oauthAdminService = oauthAdminService;
     }
 }

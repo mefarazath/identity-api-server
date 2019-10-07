@@ -255,6 +255,12 @@
                 <version>${carbon.identity.framework.version}</version>
                 <scope>provided</scope>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
+                <artifactId>org.wso2.carbon.identity.oauth</artifactId>
+                <scope>provided</scope>
+                <version>${identity.inbound.oauth2.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -354,6 +360,7 @@
         <carbon.identity.framework.version>5.14.97</carbon.identity.framework.version>
         <maven.findbugsplugin.version>3.0.4</maven.findbugsplugin.version>
         <identity.workflow.impl.bps.version>5.2.0</identity.workflow.impl.bps.version>
+        <identity.inbound.oauth2.version>6.2.29</identity.inbound.oauth2.version>
         <!--<maven.checkstyleplugin.excludes>**/gen/**/*</maven.checkstyleplugin.excludes>-->
     </properties>
 

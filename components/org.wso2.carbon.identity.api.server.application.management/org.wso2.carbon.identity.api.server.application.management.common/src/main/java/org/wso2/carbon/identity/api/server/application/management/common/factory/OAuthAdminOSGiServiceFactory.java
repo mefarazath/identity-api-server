@@ -17,36 +17,37 @@ package org.wso2.carbon.identity.api.server.application.management.common.factor
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
+import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 
 /**
  * Factory Beans serves as a factory for creating other beans within the IOC container. This factory bean is used to
- * instantiate the ApplicationManagementService type of object inside the container.
+ * instantiate the OAuthAdminServiceImpl type of object inside the container.
  */
-public class OSGiServiceFactory extends AbstractFactoryBean<ApplicationManagementService> {
+public class OAuthAdminOSGiServiceFactory extends AbstractFactoryBean<OAuthAdminServiceImpl> {
 
-    private ApplicationManagementService applicationManagementService;
+    private OAuthAdminServiceImpl oauthAdminService;
 
     @Override
     public Class<?> getObjectType() {
+
         return Object.class;
     }
 
     @Override
-    protected ApplicationManagementService createInstance() throws Exception {
+    protected OAuthAdminServiceImpl createInstance() throws Exception {
 
-        if (this.applicationManagementService == null) {
-            ApplicationManagementService applicationManagementService =
-                    (ApplicationManagementService) PrivilegedCarbonContext.getThreadLocalCarbonContext()
-                            .getOSGiService(ApplicationManagementService.class, null);
+        if (this.oauthAdminService == null) {
+            OAuthAdminServiceImpl oauthAdminService =
+                    (OAuthAdminServiceImpl) PrivilegedCarbonContext.getThreadLocalCarbonContext()
+                            .getOSGiService(OAuthAdminServiceImpl.class, null);
 
-            if (applicationManagementService != null) {
-                this.applicationManagementService = applicationManagementService;
+            if (oauthAdminService != null) {
+                this.oauthAdminService = oauthAdminService;
             } else {
-                throw new Exception("Unable to retrieve ApplicationManagementService service.");
+                throw new Exception("Unable to retrieve OAuthAdminServiceImpl service.");
             }
         }
-        return this.applicationManagementService;
+        return this.oauthAdminService;
     }
 
 }

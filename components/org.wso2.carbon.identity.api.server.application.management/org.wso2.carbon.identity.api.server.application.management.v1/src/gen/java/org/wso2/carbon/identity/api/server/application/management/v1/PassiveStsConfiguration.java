@@ -28,45 +28,45 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.*;
 
-public class RoleMapping  {
+public class PassiveStsConfiguration  {
   
-    private String localRole;
-    private String applicationRole;
+    private String realm;
+    private String replyTo;
 
     /**
     **/
-    public RoleMapping localRole(String localRole) {
+    public PassiveStsConfiguration realm(String realm) {
 
-        this.localRole = localRole;
+        this.realm = realm;
         return this;
     }
     
-    @ApiModelProperty(example = "admin", value = "")
-    @JsonProperty("localRole")
+    @ApiModelProperty(value = "")
+    @JsonProperty("realm")
     @Valid
-    public String getLocalRole() {
-        return localRole;
+    public String getRealm() {
+        return realm;
     }
-    public void setLocalRole(String localRole) {
-        this.localRole = localRole;
+    public void setRealm(String realm) {
+        this.realm = realm;
     }
 
     /**
     **/
-    public RoleMapping applicationRole(String applicationRole) {
+    public PassiveStsConfiguration replyTo(String replyTo) {
 
-        this.applicationRole = applicationRole;
+        this.replyTo = replyTo;
         return this;
     }
     
-    @ApiModelProperty(example = "Administrator", value = "")
-    @JsonProperty("applicationRole")
+    @ApiModelProperty(value = "")
+    @JsonProperty("replyTo")
     @Valid
-    public String getApplicationRole() {
-        return applicationRole;
+    public String getReplyTo() {
+        return replyTo;
     }
-    public void setApplicationRole(String applicationRole) {
-        this.applicationRole = applicationRole;
+    public void setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
     }
 
 
@@ -80,24 +80,24 @@ public class RoleMapping  {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        RoleMapping roleMapping = (RoleMapping) o;
-        return Objects.equals(this.localRole, roleMapping.localRole) &&
-            Objects.equals(this.applicationRole, roleMapping.applicationRole);
+        PassiveStsConfiguration passiveStsConfiguration = (PassiveStsConfiguration) o;
+        return Objects.equals(this.realm, passiveStsConfiguration.realm) &&
+            Objects.equals(this.replyTo, passiveStsConfiguration.replyTo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(localRole, applicationRole);
+        return Objects.hash(realm, replyTo);
     }
 
     @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("class RoleMapping {\n");
+        sb.append("class PassiveStsConfiguration {\n");
         
-        sb.append("    localRole: ").append(toIndentedString(localRole)).append("\n");
-        sb.append("    applicationRole: ").append(toIndentedString(applicationRole)).append("\n");
+        sb.append("    realm: ").append(toIndentedString(realm)).append("\n");
+        sb.append("    replyTo: ").append(toIndentedString(replyTo)).append("\n");
         sb.append("}");
         return sb.toString();
     }

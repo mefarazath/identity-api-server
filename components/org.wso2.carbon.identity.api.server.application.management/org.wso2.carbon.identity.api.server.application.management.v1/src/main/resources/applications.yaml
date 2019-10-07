@@ -664,7 +664,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SAML2Parameters'
+                $ref: '#/components/schemas/SAML2Configuration'
         '400':
           description: Bad Request
           content:
@@ -721,7 +721,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SAML2Parameters'
+                $ref: '#/components/schemas/SAML2Configuration'
         '400':
           description: Bad Request
           content:
@@ -765,7 +765,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SAML2Parameters'
+              $ref: '#/components/schemas/SAML2Configuration'
         description: This represents the SAML2 protocol attributes of the application.
         required: true
     delete:
@@ -843,7 +843,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OIDCParameters'
+                $ref: '#/components/schemas/OpenIDConnectConfiguration'
         '400':
           description: Bad Request
           content:
@@ -906,7 +906,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OIDCParameters'
+                $ref: '#/components/schemas/OpenIDConnectConfiguration'
         '400':
           description: Bad Request
           content:
@@ -950,7 +950,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OIDCParameters'
+              $ref: '#/components/schemas/OpenIDConnectConfiguration'
         description: >-
           This represents the OIDC authentication protocol parameters of an
           application.
@@ -1082,7 +1082,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OIDCParameters'
+                $ref: '#/components/schemas/OpenIDConnectConfiguration'
         '400':
           description: Bad Request
           content:
@@ -1140,7 +1140,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PassiveSTSParameters'
+                $ref: '#/components/schemas/PassiveStsConfiguration'
         '400':
           description: Bad Request
           content:
@@ -1205,7 +1205,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PassiveSTSParameters'
+                $ref: '#/components/schemas/PassiveStsConfiguration'
         '400':
           description: Bad Request
           content:
@@ -1249,7 +1249,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PassiveSTSParameters'
+              $ref: '#/components/schemas/PassiveStsConfiguration'
         description: >-
           This represents the Passive STS authentication protocol parameters of
           an application.
@@ -1329,7 +1329,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WSTrustParameters'
+                $ref: '#/components/schemas/WSTrustConfiguration'
         '400':
           description: Bad Request
           content:
@@ -1394,7 +1394,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WSTrustParameters'
+                $ref: '#/components/schemas/WSTrustConfiguration'
         '400':
           description: Bad Request
           content:
@@ -1438,7 +1438,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WSTrustParameters'
+              $ref: '#/components/schemas/WSTrustConfiguration'
         description: >-
           This represents the Passive STS authentication protocol parameters of
           an application.
@@ -1707,7 +1707,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomInboundProtcolParameters'
+                $ref: '#/components/schemas/CustomInboundProtocolConfiguration'
         '400':
           description: Bad Request
           content:
@@ -1778,7 +1778,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomInboundProtcolParameters'
+                $ref: '#/components/schemas/CustomInboundProtocolConfiguration'
         '400':
           description: Bad Request
           content:
@@ -1822,7 +1822,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CustomInboundProtcolParameters'
+              $ref: '#/components/schemas/CustomInboundProtocolConfiguration'
         description: >-
           This represents the Custom Inbound authentication protocol parameters
           of an application.
@@ -2749,9 +2749,7 @@ components:
             $ref: '#/components/schemas/Property'
         claimConfiguration:
           $ref: '#/components/schemas/ClaimConfiguration'
-        permissionConfiguration:
-          $ref: '#/components/schemas/ApplicationPermissions'
-        inboundProtocols:
+        inboundProtocolConfiguration:
           $ref: '#/components/schemas/InboundProtocols'
         authenticationSequence:
           $ref: '#/components/schemas/AuthenticationSequence'
@@ -2908,19 +2906,46 @@ components:
       type: object
       properties:
         saml:
-          $ref: '#/components/schemas/SAML2Parameters'
+          $ref: '#/components/schemas/SAML2Configuration'
         oidc:
-          $ref: '#/components/schemas/OIDCParameters'
+          $ref: '#/components/schemas/OpenIDConnectConfiguration'
         passiveSts:
-          $ref: '#/components/schemas/PassiveSTSParameters'
+          $ref: '#/components/schemas/PassiveStsConfiguration'
         wsTrust:
-          $ref: '#/components/schemas/WSTrustParameters'
-        kerberosKDC:
-          $ref: '#/components/schemas/KerberosKDCParameters'
+          $ref: '#/components/schemas/WSTrustConfiguration'
         custom:
           type: array
           items:
-            $ref: '#/components/schemas/CustomInboundProtcolParameters'
+            $ref: '#/components/schemas/CustomInboundProtocolConfiguration'
+
+            # InboundProtocol:
+            #   oneOf:
+            #     - $ref: '#/components/schemas/SAML2Configuration'
+            #     - $ref: '#/components/schemas/OpenIDConnectConfiguration'
+            #     - $ref: '#/components/schemas/PassiveStsConfiguration'
+            #     - $ref: '#/components/schemas/WSTrustConfiguration'
+            #     - $ref: '#/components/schemas/CustomInboundProtocolConfiguration'
+            #   discriminator:
+            #     propertyName: inboundType
+
+            # type: object
+            # properties:
+            #   saml:
+            #     $ref: '#/components/schemas/SAML2Configuration'
+            #   oidc:
+            #     $ref: '#/components/schemas/OpenIDConnectConfiguration'
+            #   passiveSts:
+            #     $ref: '#/components/schemas/PassiveStsConfiguration'
+            #   wsTrust:
+            #     $ref: '#/components/schemas/WSTrustConfiguration'
+            #   # kerberosKDC:
+            #   #   $ref: '#/components/schemas/KerberosKDCParameters'
+            #   custom:
+            #     type: array
+            #     items:
+            #       $ref: '#/components/schemas/CustomInboundProtocolConfiguration'
+
+
     ClaimConfiguration:
       type: object
       properties:
@@ -3002,15 +3027,15 @@ components:
         localClaimUri:
           type: string
           example: 'http://wso2.org/claims/givenname'
-    ApplicationPermissions:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-            example: pickup-permission
-    SAML2Parameters:
+    # ApplicationPermissions:
+    #   type: object
+    #   properties:
+    #     permissions:
+    #       type: array
+    #       items:
+    #         type: string
+    #         example: pickup-permission
+    SAML2Configuration:
       type: object
       properties:
         issuer:
@@ -3067,7 +3092,7 @@ components:
         enableIdpInitiatedSingleLogOut:
           type: boolean
           default: false
-    OIDCParameters:
+    OpenIDConnectConfiguration:
       type: object
       properties:
         clientId:
@@ -3210,14 +3235,14 @@ components:
         backChannelLogoutUrl:
           type: string
           example: 'https://app.example.com/backchannellogout/callback'
-    PassiveSTSParameters:
+    PassiveStsConfiguration:
       type: object
       properties:
         realm:
           type: string
         replyTo:
           type: string
-    WSTrustParameters:
+    WSTrustConfiguration:
       type: object
       required:
         - endpointAddress
@@ -3227,19 +3252,19 @@ components:
           type: string
         certificateAlias:
           type: string
-    KerberosKDCParameters:
-      type: object
-      required:
-        - serviceName
-        - password
-      properties:
-        serviceName:
-          type: string
-        description:
-          type: string
-        password:
-          type: string
-    CustomInboundProtcolParameters:
+    # KerberosKDCParameters:
+    #   type: object
+    #   required:
+    #     - serviceName
+    #     - password
+    #   properties:
+    #     serviceName:
+    #       type: string
+    #     description:
+    #       type: string
+    #     password:
+    #       type: string
+    CustomInboundProtocolConfiguration:
       type: object
       required:
         - name
