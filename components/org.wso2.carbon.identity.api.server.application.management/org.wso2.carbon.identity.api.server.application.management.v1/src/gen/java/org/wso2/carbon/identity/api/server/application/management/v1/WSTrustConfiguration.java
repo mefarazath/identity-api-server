@@ -28,45 +28,49 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.*;
 
-public class RoleMapping  {
+public class WSTrustConfiguration  {
   
-    private String localRole;
-    private String applicationRole;
+    private String endpointAddress;
+    private String certificateAlias;
 
     /**
     **/
-    public RoleMapping localRole(String localRole) {
+    public WSTrustConfiguration endpointAddress(String endpointAddress) {
 
-        this.localRole = localRole;
+        this.endpointAddress = endpointAddress;
         return this;
     }
     
-    @ApiModelProperty(example = "admin", value = "")
-    @JsonProperty("localRole")
+    @ApiModelProperty(required = true, value = "")
+    @JsonProperty("endpointAddress")
     @Valid
-    public String getLocalRole() {
-        return localRole;
+    @NotNull(message = "Property endpointAddress cannot be null.")
+
+    public String getEndpointAddress() {
+        return endpointAddress;
     }
-    public void setLocalRole(String localRole) {
-        this.localRole = localRole;
+    public void setEndpointAddress(String endpointAddress) {
+        this.endpointAddress = endpointAddress;
     }
 
     /**
     **/
-    public RoleMapping applicationRole(String applicationRole) {
+    public WSTrustConfiguration certificateAlias(String certificateAlias) {
 
-        this.applicationRole = applicationRole;
+        this.certificateAlias = certificateAlias;
         return this;
     }
     
-    @ApiModelProperty(example = "Administrator", value = "")
-    @JsonProperty("applicationRole")
+    @ApiModelProperty(required = true, value = "")
+    @JsonProperty("certificateAlias")
     @Valid
-    public String getApplicationRole() {
-        return applicationRole;
+    @NotNull(message = "Property certificateAlias cannot be null.")
+
+    public String getCertificateAlias() {
+        return certificateAlias;
     }
-    public void setApplicationRole(String applicationRole) {
-        this.applicationRole = applicationRole;
+    public void setCertificateAlias(String certificateAlias) {
+        this.certificateAlias = certificateAlias;
     }
 
 
@@ -80,24 +84,24 @@ public class RoleMapping  {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        RoleMapping roleMapping = (RoleMapping) o;
-        return Objects.equals(this.localRole, roleMapping.localRole) &&
-            Objects.equals(this.applicationRole, roleMapping.applicationRole);
+        WSTrustConfiguration wsTrustConfiguration = (WSTrustConfiguration) o;
+        return Objects.equals(this.endpointAddress, wsTrustConfiguration.endpointAddress) &&
+            Objects.equals(this.certificateAlias, wsTrustConfiguration.certificateAlias);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(localRole, applicationRole);
+        return Objects.hash(endpointAddress, certificateAlias);
     }
 
     @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("class RoleMapping {\n");
+        sb.append("class WSTrustConfiguration {\n");
         
-        sb.append("    localRole: ").append(toIndentedString(localRole)).append("\n");
-        sb.append("    applicationRole: ").append(toIndentedString(applicationRole)).append("\n");
+        sb.append("    endpointAddress: ").append(toIndentedString(endpointAddress)).append("\n");
+        sb.append("    certificateAlias: ").append(toIndentedString(certificateAlias)).append("\n");
         sb.append("}");
         return sb.toString();
     }

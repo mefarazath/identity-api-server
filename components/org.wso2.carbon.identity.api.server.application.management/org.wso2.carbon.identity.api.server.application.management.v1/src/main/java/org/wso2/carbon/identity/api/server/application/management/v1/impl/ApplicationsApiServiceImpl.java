@@ -7,13 +7,13 @@ import org.wso2.carbon.identity.api.server.application.management.v1.Application
 import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationsApiService;
 import org.wso2.carbon.identity.api.server.application.management.v1.AuthenticationSequence;
 import org.wso2.carbon.identity.api.server.application.management.v1.ClaimConfiguration;
-import org.wso2.carbon.identity.api.server.application.management.v1.CustomInboundProtcolParameters;
+import org.wso2.carbon.identity.api.server.application.management.v1.CustomInboundProtocolConfiguration;
 import org.wso2.carbon.identity.api.server.application.management.v1.InboundProtocols;
-import org.wso2.carbon.identity.api.server.application.management.v1.OIDCParameters;
-import org.wso2.carbon.identity.api.server.application.management.v1.PassiveSTSParameters;
+import org.wso2.carbon.identity.api.server.application.management.v1.OpenIDConnectConfiguration;
+import org.wso2.carbon.identity.api.server.application.management.v1.PassiveStsConfiguration;
 import org.wso2.carbon.identity.api.server.application.management.v1.ProvisioningConfiguration;
-import org.wso2.carbon.identity.api.server.application.management.v1.SAML2Parameters;
-import org.wso2.carbon.identity.api.server.application.management.v1.WSTrustParameters;
+import org.wso2.carbon.identity.api.server.application.management.v1.SAML2Configuration;
+import org.wso2.carbon.identity.api.server.application.management.v1.WSTrustConfiguration;
 import org.wso2.carbon.identity.api.server.application.management.v1.core.ServerApplicationManagementService;
 
 import javax.ws.rs.core.Response;
@@ -34,6 +34,12 @@ public class ApplicationsApiServiceImpl implements ApplicationsApiService {
                 .entity(applicationManagementService.getAllApplications(
                         limit, offset, filter, sort, sortBy, requiredAttributes))
                 .build();
+    }
+
+    @Override
+    public Response getApplication(String applicationId) {
+        // do some magic!
+        return Response.ok().entity(applicationManagementService.getApplication(applicationId)).build();
     }
 
     @Override
@@ -110,12 +116,6 @@ public class ApplicationsApiServiceImpl implements ApplicationsApiService {
 
     @Override
     public Response getAdvancedConfigurations(String applicationId) {
-        // do some magic!
-        return Response.ok().entity("magic!").build();
-    }
-
-    @Override
-    public Response getApplication(String applicationId) {
         // do some magic!
         return Response.ok().entity("magic!").build();
     }
@@ -218,34 +218,37 @@ public class ApplicationsApiServiceImpl implements ApplicationsApiService {
     }
 
     @Override
-    public Response updateCustomInboundConfiguration(String applicationId, String inboundProtocolId,
-                                                     CustomInboundProtcolParameters customInboundProtcolParameters) {
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+    public Response updateCustomInboundConfiguration(String applicationId,
+                                                     String inboundProtocolId,
+                                                     CustomInboundProtocolConfiguration customInboundProtocolConfig) {
+
+        return null;
     }
 
     @Override
     public Response updateInboundAuthenticationConfigurations(String applicationId, InboundProtocols inboundProtocols) {
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+
+        return null;
     }
 
     @Override
-    public Response updateInboundOAuthConfiguration(String applicationId, OIDCParameters oiDCParameters) {
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+    public Response updateInboundOAuthConfiguration(String applicationId,
+                                                    OpenIDConnectConfiguration openIDConnectConfiguration) {
+
+        return null;
     }
 
     @Override
-    public Response updateInboundSAMLConfiguration(String applicationId, SAML2Parameters saML2Parameters) {
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+    public Response updateInboundSAMLConfiguration(String applicationId, SAML2Configuration saML2Configuration) {
+
+        return null;
     }
 
     @Override
-    public Response updatePassiveStsConfiguration(String applicationId, PassiveSTSParameters passiveSTSParameters) {
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+    public Response updatePassiveStsConfiguration(String applicationId,
+                                                  PassiveStsConfiguration passiveStsConfiguration) {
+
+        return null;
     }
 
     @Override
@@ -262,8 +265,8 @@ public class ApplicationsApiServiceImpl implements ApplicationsApiService {
     }
 
     @Override
-    public Response updateWSTrustConfiguration(String applicationId, WSTrustParameters wsTrustParameters) {
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+    public Response updateWSTrustConfiguration(String applicationId, WSTrustConfiguration wsTrustConfiguration) {
+
+        return null;
     }
 }

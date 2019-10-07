@@ -299,6 +299,12 @@
                 <scope>provided</scope>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
+                <artifactId>org.wso2.carbon.identity.oauth</artifactId>
+                <scope>provided</scope>
+                <version>${identity.inbound.oauth2.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -375,6 +381,7 @@
         <identity.workflow.impl.bps.version>5.2.0</identity.workflow.impl.bps.version>
         <maven.checkstyleplugin.excludes>**/gen/**/*</maven.checkstyleplugin.excludes>
         <identity.event.handler.version>1.2.9</identity.event.handler.version>
+        <identity.inbound.oauth2.version>6.2.29</identity.inbound.oauth2.version>
     </properties>
 
     <modules>

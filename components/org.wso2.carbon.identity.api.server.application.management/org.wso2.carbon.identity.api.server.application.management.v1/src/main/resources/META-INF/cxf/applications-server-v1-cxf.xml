@@ -26,7 +26,13 @@
           class="org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementServiceHolder">
         <property name="applicationManagementService" ref="applicationManagementServiceFactoryBean"/>
     </bean>
+    <bean id="oauthAdminServiceHolderBean"
+          class="org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementServiceHolder">
+        <property name="oauthAdminService" ref="oauthAdminServiceFactoryBean"/>
+    </bean>
 
     <bean id="applicationManagementServiceFactoryBean"
-          class="org.wso2.carbon.identity.api.server.application.management.common.factory.OSGiServiceFactory"/>
+          class="org.wso2.carbon.identity.api.server.application.management.common.factory.ApplicationManagementOSGiServiceFactory"/>
+    <bean id="oauthAdminServiceFactoryBean"
+          class="org.wso2.carbon.identity.api.server.application.management.common.factory.OAuthAdminOSGiServiceFactory"/>
 </beans>
