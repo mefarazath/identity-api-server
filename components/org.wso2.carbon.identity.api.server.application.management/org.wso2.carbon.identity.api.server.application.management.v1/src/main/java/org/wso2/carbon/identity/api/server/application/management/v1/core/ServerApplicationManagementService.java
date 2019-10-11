@@ -19,27 +19,23 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementServiceHolder;
-import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationBasicInformation;
+import org.wso2.carbon.identity.api.server.application.management.v1.Application;
+import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationListItem;
 import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationListResponse;
-import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationResponse;
-import org.wso2.carbon.identity.api.server.application.management.v1.InboundProtocols;
-import org.wso2.carbon.identity.api.server.application.management.v1.OpenIDConnectConfiguration;
-import org.wso2.carbon.identity.api.server.application.management.v1.SAML2Configuration;
+import org.wso2.carbon.identity.api.server.application.management.v1.Link;
+import org.wso2.carbon.identity.api.server.application.management.v1.core.functions.ApplicationBasicInfoToModel;
+import org.wso2.carbon.identity.api.server.application.management.v1.core.functions.ServiceProviderToExternalModel;
 import org.wso2.carbon.identity.api.server.common.ContextLoader;
 import org.wso2.carbon.identity.api.server.common.error.APIError;
 import org.wso2.carbon.identity.api.server.common.error.ErrorResponse;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.ApplicationBasicInfo;
-import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
-import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
-import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
-import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.ws.rs.core.Response;
 
 /**
@@ -66,7 +62,7 @@ public class ServerApplicationManagementService {
     public ApplicationListResponse getAllApplications(Integer limit,
                                                       Integer offset,
                                                       String filter,
-                                                      String sort,
+                                                      String sortOrder,
                                                       String sortBy,
                                                       String requiredAttributes) {
 
@@ -78,27 +74,41 @@ public class ServerApplicationManagementService {
         ApplicationListResponse applicationListResponse = new ApplicationListResponse();
         try {
             String username = ContextLoader.getUsernameFromContext();
-            String tenantDomainFromContext = ContextLoader.getTenantDomainFromContext();
+            String tenantDomain = ContextLoader.getTenantDomainFromContext();
 
             int totalApps = ApplicationManagementServiceHolder
-                    .getApplicationManagementService().getCountOfAllApplications(tenantDomainFromContext, username);
+                    .getApplicationManagementService().getCountOfApplications(tenantDomain, username, filter);
 
-            ApplicationBasicInfo[] allApplicationBasicInfo =
+            ApplicationBasicInfo[] filteredAppList =
                     ApplicationManagementServiceHolder.getApplicationManagementService()
-                            .getApplicationBasicInfo(tenantDomainFromContext, username, filter, offset, limit);
+                            .getApplicationBasicInfo(tenantDomain, username, filter, offset, limit);
 
-            applicationListResponse.totalResults(totalApps)
+            return applicationListResponse.totalResults(totalApps)
                     .startIndex(offset)
-                    .limitPerPage(limit)
-                    .applications(getApplicationListItems(allApplicationBasicInfo));
+                    .count(filteredAppList.length)
+                    .applications(getApplicationListItems(filteredAppList))
+                    .links(buildLinks(limit, offset, filter, totalApps));
+
         } catch (IdentityApplicationManagementException e) {
             throw handleServerError(e, "Error while retrieving all applications.");
         }
-
-        return applicationListResponse;
     }
 
-    public ApplicationResponse getApplication(String applicationId) {
+    private List<Link> buildLinks(int limit, int offset, String filter, int totalApps) {
+
+        List<Link> links = new ArrayList<>();
+
+        // Prev
+        // Next
+        // First
+        // Last
+        // If this is the first page, it will have “next” and “last” links only.
+        // If this is the last page, it will have “previous” and “first” links only.
+
+        return links;
+    }
+
+    public Application getApplication(String applicationId) {
 
         int id = Integer.parseInt(applicationId);
         try {
@@ -109,94 +119,10 @@ public class ServerApplicationManagementService {
                 throw handleApplicationNotFoundException();
             }
 
-            return buildApplicationResponse(serviceProvider);
+            return new ServiceProviderToExternalModel().convert(serviceProvider);
         } catch (IdentityApplicationManagementException e) {
             throw handleServerError(e, "Error while retrieving application with id: " + applicationId);
         }
-    }
-
-    private ApplicationResponse buildApplicationResponse(ServiceProvider serviceProvider) {
-
-        return new ApplicationResponse()
-                .id(String.valueOf(serviceProvider.getApplicationID()))
-                .name(serviceProvider.getApplicationName())
-                .description(serviceProvider.getDescription())
-                .inboundProtocolConfiguration(buildInboundProtocols(serviceProvider.getInboundAuthenticationConfig()));
-    }
-
-    private InboundProtocols buildInboundProtocols(InboundAuthenticationConfig inboundAuthenticationConfig) {
-
-        InboundProtocols inboundProtocols = new InboundProtocols();
-
-        InboundAuthenticationRequestConfig[] inboundAuthConfigs =
-                inboundAuthenticationConfig.getInboundAuthenticationRequestConfigs();
-
-        if (inboundAuthConfigs != null) {
-            for (InboundAuthenticationRequestConfig inboundAuth : inboundAuthConfigs) {
-
-                switch (inboundAuth.getInboundAuthType()) {
-                    case "SAML":
-                        inboundProtocols.setSaml(buildSaml2Configuration(inboundAuth));
-                        break;
-                    case "oauth2":
-                        inboundProtocols.setOidc(buildOpenIdConnectConfiguration(inboundAuth));
-                        break;
-                    default:
-                        break;
-
-                }
-            }
-        }
-
-        return inboundProtocols;
-    }
-
-    private OpenIDConnectConfiguration buildOpenIdConnectConfiguration(InboundAuthenticationRequestConfig inboundAuth) {
-
-        String clientID = inboundAuth.getInboundAuthKey();
-
-        try {
-            OAuthConsumerAppDTO oauthApp =
-                    ApplicationManagementServiceHolder.getOAuthAdminService().getOAuthApplicationData(clientID);
-
-            return new OpenIDConnectConfiguration()
-                    .clientId(oauthApp.getOauthConsumerKey())
-                    .clientSecret(oauthApp.getOauthConsumerSecret())
-                    .grantTypes(buildGrantTypeList(oauthApp))
-                    .state(OpenIDConnectConfiguration.StateEnum.valueOf(oauthApp.getState()))
-                    .callbackURLs(getCallbackUrls(oauthApp))
-                    .allowedOrigins(getAllowedOrigins(oauthApp))
-                    .publicClient(oauthApp.isBypassClientCredentials())
-                    ;
-
-        } catch (IdentityOAuthAdminException e) {
-            throw handleServerError(e, "Error while retrieving oauth application data for clientId: " + clientID);
-        }
-    }
-
-    private List<String> getAllowedOrigins(OAuthConsumerAppDTO oauthApp) {
-
-        return Collections.emptyList();
-    }
-
-    private List<String> getCallbackUrls(OAuthConsumerAppDTO oauthApp) {
-
-        List<String> callbackUris = new ArrayList<>();
-        if (StringUtils.isNotBlank(oauthApp.getCallbackUrl())) {
-            callbackUris.add(oauthApp.getCallbackUrl());
-        }
-        return callbackUris;
-    }
-
-    private List<String> buildGrantTypeList(OAuthConsumerAppDTO oauthApp) {
-
-        return oauthApp.getGrantTypes() != null ?
-                Arrays.asList(oauthApp.getGrantTypes().split("\\s+")) : new ArrayList<>();
-    }
-
-    private SAML2Configuration buildSaml2Configuration(InboundAuthenticationRequestConfig inboundAuth) {
-
-        return new SAML2Configuration();
     }
 
     private APIError handleServerError(Exception e, String message) {
@@ -226,20 +152,11 @@ public class ServerApplicationManagementService {
         return new APIError(status, errorResponse);
     }
 
-    private List<ApplicationBasicInformation> getApplicationListItems(ApplicationBasicInfo[] allApplicationBasicInfo) {
+    private List<ApplicationListItem> getApplicationListItems(ApplicationBasicInfo[] allApplicationBasicInfo) {
 
-        List<ApplicationBasicInformation> apps = new ArrayList<>();
-
-        for (ApplicationBasicInfo appBasicInfo : allApplicationBasicInfo) {
-            ApplicationBasicInformation appBasicInfoBean = new ApplicationBasicInformation()
-                    .id(String.valueOf(appBasicInfo.getApplicationId()))
-                    .description(appBasicInfo.getDescription())
-                    .name(appBasicInfo.getApplicationName());
-
-            apps.add(appBasicInfoBean);
-        }
-
-        return apps;
+        return Arrays.stream(allApplicationBasicInfo)
+                .map(new ApplicationBasicInfoToModel())
+                .collect(Collectors.toList());
     }
 
     private String buildFilter(String filter) {

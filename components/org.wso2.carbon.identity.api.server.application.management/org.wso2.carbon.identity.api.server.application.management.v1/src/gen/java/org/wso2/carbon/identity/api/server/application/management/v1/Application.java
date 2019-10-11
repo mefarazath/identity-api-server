@@ -20,13 +20,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
-import java.util.List;
 import org.wso2.carbon.identity.api.server.application.management.v1.AdvancedApplicationConfiguration;
 import org.wso2.carbon.identity.api.server.application.management.v1.AuthenticationSequence;
 import org.wso2.carbon.identity.api.server.application.management.v1.ClaimConfiguration;
 import org.wso2.carbon.identity.api.server.application.management.v1.InboundProtocols;
-import org.wso2.carbon.identity.api.server.application.management.v1.Property;
 import org.wso2.carbon.identity.api.server.application.management.v1.ProvisioningConfiguration;
 import javax.validation.constraints.*;
 
@@ -36,14 +33,13 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.*;
 
-public class ApplicationRequest  {
+public class Application  {
   
+    private String id;
     private String name;
     private String description;
     private String homePage;
     private String image;
-    private List<Property> properties = null;
-
     private ClaimConfiguration claimConfiguration;
     private InboundProtocols inboundProtocolConfiguration;
     private AuthenticationSequence authenticationSequence;
@@ -52,7 +48,25 @@ public class ApplicationRequest  {
 
     /**
     **/
-    public ApplicationRequest name(String name) {
+    public Application id(String id) {
+
+        this.id = id;
+        return this;
+    }
+    
+    @ApiModelProperty(example = "394b8adcce24c64a8a09a0d80abf8c337bd253de", value = "")
+    @JsonProperty("id")
+    @Valid
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+    **/
+    public Application name(String name) {
 
         this.name = name;
         return this;
@@ -72,7 +86,7 @@ public class ApplicationRequest  {
 
     /**
     **/
-    public ApplicationRequest description(String description) {
+    public Application description(String description) {
 
         this.description = description;
         return this;
@@ -90,7 +104,7 @@ public class ApplicationRequest  {
 
     /**
     **/
-    public ApplicationRequest homePage(String homePage) {
+    public Application homePage(String homePage) {
 
         this.homePage = homePage;
         return this;
@@ -108,7 +122,7 @@ public class ApplicationRequest  {
 
     /**
     **/
-    public ApplicationRequest image(String image) {
+    public Application image(String image) {
 
         this.image = image;
         return this;
@@ -126,33 +140,7 @@ public class ApplicationRequest  {
 
     /**
     **/
-    public ApplicationRequest properties(List<Property> properties) {
-
-        this.properties = properties;
-        return this;
-    }
-    
-    @ApiModelProperty(value = "")
-    @JsonProperty("properties")
-    @Valid
-    public List<Property> getProperties() {
-        return properties;
-    }
-    public void setProperties(List<Property> properties) {
-        this.properties = properties;
-    }
-
-    public ApplicationRequest addPropertiesItem(Property propertiesItem) {
-        if (this.properties == null) {
-            this.properties = new ArrayList<>();
-        }
-        this.properties.add(propertiesItem);
-        return this;
-    }
-
-        /**
-    **/
-    public ApplicationRequest claimConfiguration(ClaimConfiguration claimConfiguration) {
+    public Application claimConfiguration(ClaimConfiguration claimConfiguration) {
 
         this.claimConfiguration = claimConfiguration;
         return this;
@@ -170,7 +158,7 @@ public class ApplicationRequest  {
 
     /**
     **/
-    public ApplicationRequest inboundProtocolConfiguration(InboundProtocols inboundProtocolConfiguration) {
+    public Application inboundProtocolConfiguration(InboundProtocols inboundProtocolConfiguration) {
 
         this.inboundProtocolConfiguration = inboundProtocolConfiguration;
         return this;
@@ -188,7 +176,7 @@ public class ApplicationRequest  {
 
     /**
     **/
-    public ApplicationRequest authenticationSequence(AuthenticationSequence authenticationSequence) {
+    public Application authenticationSequence(AuthenticationSequence authenticationSequence) {
 
         this.authenticationSequence = authenticationSequence;
         return this;
@@ -206,7 +194,7 @@ public class ApplicationRequest  {
 
     /**
     **/
-    public ApplicationRequest advancedConfigurations(AdvancedApplicationConfiguration advancedConfigurations) {
+    public Application advancedConfigurations(AdvancedApplicationConfiguration advancedConfigurations) {
 
         this.advancedConfigurations = advancedConfigurations;
         return this;
@@ -224,7 +212,7 @@ public class ApplicationRequest  {
 
     /**
     **/
-    public ApplicationRequest provisioningConfigurations(ProvisioningConfiguration provisioningConfigurations) {
+    public Application provisioningConfigurations(ProvisioningConfiguration provisioningConfigurations) {
 
         this.provisioningConfigurations = provisioningConfigurations;
         return this;
@@ -251,35 +239,35 @@ public class ApplicationRequest  {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ApplicationRequest applicationRequest = (ApplicationRequest) o;
-        return Objects.equals(this.name, applicationRequest.name) &&
-            Objects.equals(this.description, applicationRequest.description) &&
-            Objects.equals(this.homePage, applicationRequest.homePage) &&
-            Objects.equals(this.image, applicationRequest.image) &&
-            Objects.equals(this.properties, applicationRequest.properties) &&
-            Objects.equals(this.claimConfiguration, applicationRequest.claimConfiguration) &&
-            Objects.equals(this.inboundProtocolConfiguration, applicationRequest.inboundProtocolConfiguration) &&
-            Objects.equals(this.authenticationSequence, applicationRequest.authenticationSequence) &&
-            Objects.equals(this.advancedConfigurations, applicationRequest.advancedConfigurations) &&
-            Objects.equals(this.provisioningConfigurations, applicationRequest.provisioningConfigurations);
+        Application application = (Application) o;
+        return Objects.equals(this.id, application.id) &&
+            Objects.equals(this.name, application.name) &&
+            Objects.equals(this.description, application.description) &&
+            Objects.equals(this.homePage, application.homePage) &&
+            Objects.equals(this.image, application.image) &&
+            Objects.equals(this.claimConfiguration, application.claimConfiguration) &&
+            Objects.equals(this.inboundProtocolConfiguration, application.inboundProtocolConfiguration) &&
+            Objects.equals(this.authenticationSequence, application.authenticationSequence) &&
+            Objects.equals(this.advancedConfigurations, application.advancedConfigurations) &&
+            Objects.equals(this.provisioningConfigurations, application.provisioningConfigurations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, homePage, image, properties, claimConfiguration, inboundProtocolConfiguration, authenticationSequence, advancedConfigurations, provisioningConfigurations);
+        return Objects.hash(id, name, description, homePage, image, claimConfiguration, inboundProtocolConfiguration, authenticationSequence, advancedConfigurations, provisioningConfigurations);
     }
 
     @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("class ApplicationRequest {\n");
+        sb.append("class Application {\n");
         
+        sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    homePage: ").append(toIndentedString(homePage)).append("\n");
         sb.append("    image: ").append(toIndentedString(image)).append("\n");
-        sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
         sb.append("    claimConfiguration: ").append(toIndentedString(claimConfiguration)).append("\n");
         sb.append("    inboundProtocolConfiguration: ").append(toIndentedString(inboundProtocolConfiguration)).append("\n");
         sb.append("    authenticationSequence: ").append(toIndentedString(authenticationSequence)).append("\n");

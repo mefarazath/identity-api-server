@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.*;
 public class CustomInboundProtocolConfiguration  {
   
     private String name;
+    private String inboundKey;
     private List<Property> properties = null;
 
 
@@ -55,6 +56,26 @@ public class CustomInboundProtocolConfiguration  {
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+    **/
+    public CustomInboundProtocolConfiguration inboundKey(String inboundKey) {
+
+        this.inboundKey = inboundKey;
+        return this;
+    }
+    
+    @ApiModelProperty(example = "custom-wso2-inbound-id", required = true, value = "")
+    @JsonProperty("inboundKey")
+    @Valid
+    @NotNull(message = "Property inboundKey cannot be null.")
+
+    public String getInboundKey() {
+        return inboundKey;
+    }
+    public void setInboundKey(String inboundKey) {
+        this.inboundKey = inboundKey;
     }
 
     /**
@@ -96,12 +117,13 @@ public class CustomInboundProtocolConfiguration  {
         }
         CustomInboundProtocolConfiguration customInboundProtocolConfiguration = (CustomInboundProtocolConfiguration) o;
         return Objects.equals(this.name, customInboundProtocolConfiguration.name) &&
+            Objects.equals(this.inboundKey, customInboundProtocolConfiguration.inboundKey) &&
             Objects.equals(this.properties, customInboundProtocolConfiguration.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, properties);
+        return Objects.hash(name, inboundKey, properties);
     }
 
     @Override
@@ -111,6 +133,7 @@ public class CustomInboundProtocolConfiguration  {
         sb.append("class CustomInboundProtocolConfiguration {\n");
         
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("    inboundKey: ").append(toIndentedString(inboundKey)).append("\n");
         sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
         sb.append("}");
         return sb.toString();

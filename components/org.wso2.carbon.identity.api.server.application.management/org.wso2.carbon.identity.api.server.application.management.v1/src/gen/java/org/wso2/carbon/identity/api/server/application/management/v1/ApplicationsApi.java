@@ -18,9 +18,8 @@ package org.wso2.carbon.identity.api.server.application.management.v1;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.wso2.carbon.identity.api.server.application.management.v1.AdvancedApplicationConfiguration;
+import org.wso2.carbon.identity.api.server.application.management.v1.Application;
 import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationListResponse;
-import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationRequest;
-import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationResponse;
 import org.wso2.carbon.identity.api.server.application.management.v1.AuthenticationSequence;
 import org.wso2.carbon.identity.api.server.application.management.v1.ClaimConfiguration;
 import org.wso2.carbon.identity.api.server.application.management.v1.CustomInboundProtocolConfiguration;
@@ -54,23 +53,23 @@ public class ApplicationsApi  {
     
     @Consumes({ "application/json", "application/xml" })
     @Produces({ "application/json" })
-    @ApiOperation(value = "Add application ", notes = "This API provides the capability to store the application information provided by users. ", response = ApplicationResponse.class, authorizations = {
+    @ApiOperation(value = "Add application ", notes = "This API provides the capability to store the application information provided by users. ", response = Application.class, authorizations = {
         @Authorization(value = "BasicAuth"),
         @Authorization(value = "OAuth2", scopes = {
             
         })
     }, tags={ "Applications", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "Successful response.", response = ApplicationResponse.class),
+        @ApiResponse(code = 201, message = "Successful response.", response = Application.class),
         @ApiResponse(code = 400, message = "Bad Request", response = Error.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Error.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Error.class),
         @ApiResponse(code = 409, message = "Conflict", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response createApplication(@ApiParam(value = "This represents the application to be created." ,required=true) @Valid ApplicationRequest applicationRequest,     @Valid@ApiParam(value = "Pre-defined template to use when creating the application. ")  @QueryParam("template") String template) {
+    public Response createApplication(@ApiParam(value = "This represents the application to be created." ,required=true) @Valid Application application,     @Valid@ApiParam(value = "Pre-defined template to use when creating the application. ")  @QueryParam("template") String template) {
 
-        return delegate.createApplication(applicationRequest,  template );
+        return delegate.createApplication(application,  template );
     }
 
     @Valid
@@ -380,9 +379,9 @@ public class ApplicationsApi  {
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response getAllApplications(    @Valid@ApiParam(value = "Maximum number of records to return. ")  @QueryParam("limit") Integer limit,     @Valid@ApiParam(value = "Number of records to skip for pagination. ")  @QueryParam("offset") Integer offset,     @Valid@ApiParam(value = "Condition to filter the retrival of records. ")  @QueryParam("filter") String filter,     @Valid@ApiParam(value = "Define the order in which the retrieved records should be sorted. _This parameter is not supported yet._ ", allowableValues="ascending, descending")  @QueryParam("sort") String sort,     @Valid@ApiParam(value = "Attribute by which the retrieved records should be sorted. _This parameter is not supported yet._ ")  @QueryParam("sortBy") String sortBy,     @Valid@ApiParam(value = "Specifies the required parameters in the response _This parameter is not supported yet_ ")  @QueryParam("requiredAttributes") String requiredAttributes) {
+    public Response getAllApplications(    @Valid@ApiParam(value = "Maximum number of records to return. ")  @QueryParam("limit") Integer limit,     @Valid@ApiParam(value = "Number of records to skip for pagination. ")  @QueryParam("offset") Integer offset,     @Valid@ApiParam(value = "Condition to filter the retrival of records. ")  @QueryParam("filter") String filter,     @Valid@ApiParam(value = "Define the order in which the retrieved records should be sorted. _This parameter is not supported yet._ ", allowableValues="ascending, descending")  @QueryParam("sortOrder") String sortOrder,     @Valid@ApiParam(value = "Attribute by which the retrieved records should be sorted. _This parameter is not supported yet._ ")  @QueryParam("sortBy") String sortBy,     @Valid@ApiParam(value = "Specifies the required parameters in the response _This parameter is not supported yet_ ")  @QueryParam("attributes") String attributes) {
 
-        return delegate.getAllApplications(limit,  offset,  filter,  sort,  sortBy,  requiredAttributes );
+        return delegate.getAllApplications(limit,  offset,  filter,  sortOrder,  sortBy,  attributes );
     }
 
     @Valid
@@ -390,14 +389,14 @@ public class ApplicationsApi  {
     @Path("/{applicationId}")
     
     @Produces({ "application/json", "application/xml" })
-    @ApiOperation(value = "Retrive application by id ", notes = "This API provides the capability to retrive the application information by id. ", response = ApplicationResponse.class, authorizations = {
+    @ApiOperation(value = "Retrive application by id ", notes = "This API provides the capability to retrive the application information by id. ", response = Application.class, authorizations = {
         @Authorization(value = "BasicAuth"),
         @Authorization(value = "OAuth2", scopes = {
             
         })
     }, tags={ "Applications", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = ApplicationResponse.class),
+        @ApiResponse(code = 200, message = "OK", response = Application.class),
         @ApiResponse(code = 400, message = "Bad Request", response = Error.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Error.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Error.class),
@@ -725,23 +724,23 @@ public class ApplicationsApi  {
     @Path("/{applicationId}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @ApiOperation(value = "Update an application by id ", notes = "This API provides the capability to update an application. ", response = ApplicationResponse.class, authorizations = {
+    @ApiOperation(value = "Update an application by id ", notes = "This API provides the capability to update an application. ", response = Application.class, authorizations = {
         @Authorization(value = "BasicAuth"),
         @Authorization(value = "OAuth2", scopes = {
             
         })
     }, tags={ "Applications", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successful response.", response = ApplicationResponse.class),
+        @ApiResponse(code = 200, message = "Successful response.", response = Application.class),
         @ApiResponse(code = 400, message = "Bad Request", response = Error.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Error.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Error.class),
         @ApiResponse(code = 404, message = "Not Found", response = Error.class),
         @ApiResponse(code = 500, message = "Server Error", response = Error.class)
     })
-    public Response updateApplication(@ApiParam(value = "Id of the application.",required=true) @PathParam("applicationId") String applicationId, @ApiParam(value = "This represents the application to be updated." ,required=true) @Valid ApplicationResponse applicationResponse) {
+    public Response updateApplication(@ApiParam(value = "Id of the application.",required=true) @PathParam("applicationId") String applicationId, @ApiParam(value = "This represents the application to be updated." ,required=true) @Valid Application application) {
 
-        return delegate.updateApplication(applicationId,  applicationResponse );
+        return delegate.updateApplication(applicationId,  application );
     }
 
     @Valid

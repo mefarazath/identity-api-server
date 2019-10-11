@@ -73,7 +73,6 @@ public enum StateEnum {
 }
 
     private StateEnum state = StateEnum.ACTIVE;
-    private String version = "2.0";
     private List<String> grantTypes = new ArrayList<>();
 
     private List<String> callbackURLs = null;
@@ -142,27 +141,6 @@ public enum StateEnum {
     }
     public void setState(StateEnum state) {
         this.state = state;
-    }
-
-    /**
-    * Possible values are &#39;2.0&#39; and &#39;1.0a&#39;
-    **/
-    public OpenIDConnectConfiguration version(String version) {
-
-        this.version = version;
-        return this;
-    }
-    
-    @ApiModelProperty(required = true, value = "Possible values are '2.0' and '1.0a'")
-    @JsonProperty("version")
-    @Valid
-    @NotNull(message = "Property version cannot be null.")
-
-    public String getVersion() {
-        return version;
-    }
-    public void setVersion(String version) {
-        this.version = version;
     }
 
     /**
@@ -412,7 +390,6 @@ public enum StateEnum {
         return Objects.equals(this.clientId, openIDConnectConfiguration.clientId) &&
             Objects.equals(this.clientSecret, openIDConnectConfiguration.clientSecret) &&
             Objects.equals(this.state, openIDConnectConfiguration.state) &&
-            Objects.equals(this.version, openIDConnectConfiguration.version) &&
             Objects.equals(this.grantTypes, openIDConnectConfiguration.grantTypes) &&
             Objects.equals(this.callbackURLs, openIDConnectConfiguration.callbackURLs) &&
             Objects.equals(this.allowedOrigins, openIDConnectConfiguration.allowedOrigins) &&
@@ -428,7 +405,7 @@ public enum StateEnum {
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientId, clientSecret, state, version, grantTypes, callbackURLs, allowedOrigins, publicClient, pkce, accessToken, refreshToken, idToken, logout, validateRequestObjectSignature, scopeValidators);
+        return Objects.hash(clientId, clientSecret, state, grantTypes, callbackURLs, allowedOrigins, publicClient, pkce, accessToken, refreshToken, idToken, logout, validateRequestObjectSignature, scopeValidators);
     }
 
     @Override
@@ -440,7 +417,6 @@ public enum StateEnum {
         sb.append("    clientId: ").append(toIndentedString(clientId)).append("\n");
         sb.append("    clientSecret: ").append(toIndentedString(clientSecret)).append("\n");
         sb.append("    state: ").append(toIndentedString(state)).append("\n");
-        sb.append("    version: ").append(toIndentedString(version)).append("\n");
         sb.append("    grantTypes: ").append(toIndentedString(grantTypes)).append("\n");
         sb.append("    callbackURLs: ").append(toIndentedString(callbackURLs)).append("\n");
         sb.append("    allowedOrigins: ").append(toIndentedString(allowedOrigins)).append("\n");

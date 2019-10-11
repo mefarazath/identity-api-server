@@ -28,17 +28,17 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.*;
 
-public class ApplicationBasicInformation  {
+public class ApplicationListItem  {
   
     private String id;
     private String name;
     private String description;
-    private String logo;
+    private String image;
     private String location;
 
     /**
     **/
-    public ApplicationBasicInformation id(String id) {
+    public ApplicationListItem id(String id) {
 
         this.id = id;
         return this;
@@ -56,7 +56,7 @@ public class ApplicationBasicInformation  {
 
     /**
     **/
-    public ApplicationBasicInformation name(String name) {
+    public ApplicationListItem name(String name) {
 
         this.name = name;
         return this;
@@ -74,7 +74,7 @@ public class ApplicationBasicInformation  {
 
     /**
     **/
-    public ApplicationBasicInformation description(String description) {
+    public ApplicationListItem description(String description) {
 
         this.description = description;
         return this;
@@ -92,31 +92,31 @@ public class ApplicationBasicInformation  {
 
     /**
     **/
-    public ApplicationBasicInformation logo(String logo) {
+    public ApplicationListItem image(String image) {
 
-        this.logo = logo;
+        this.image = image;
         return this;
     }
     
     @ApiModelProperty(example = "https://example.com/logo/my-logo.png", value = "")
-    @JsonProperty("logo")
+    @JsonProperty("image")
     @Valid
-    public String getLogo() {
-        return logo;
+    public String getImage() {
+        return image;
     }
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     /**
     **/
-    public ApplicationBasicInformation location(String location) {
+    public ApplicationListItem location(String location) {
 
         this.location = location;
         return this;
     }
     
-    @ApiModelProperty(example = "\"https://iam.example.com/t/wso2.com/api/server/v1/applications/85e3f4b8-0d22-4181-b1e3-1651f71b88bd\"", value = "")
+    @ApiModelProperty(example = "https://iam.example.com/t/wso2.com/api/server/v1/applications/85e3f4b8-0d22-4181-b1e3-1651f71b88bd", value = "")
     @JsonProperty("location")
     @Valid
     public String getLocation() {
@@ -137,29 +137,29 @@ public class ApplicationBasicInformation  {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ApplicationBasicInformation applicationBasicInformation = (ApplicationBasicInformation) o;
-        return Objects.equals(this.id, applicationBasicInformation.id) &&
-            Objects.equals(this.name, applicationBasicInformation.name) &&
-            Objects.equals(this.description, applicationBasicInformation.description) &&
-            Objects.equals(this.logo, applicationBasicInformation.logo) &&
-            Objects.equals(this.location, applicationBasicInformation.location);
+        ApplicationListItem applicationListItem = (ApplicationListItem) o;
+        return Objects.equals(this.id, applicationListItem.id) &&
+            Objects.equals(this.name, applicationListItem.name) &&
+            Objects.equals(this.description, applicationListItem.description) &&
+            Objects.equals(this.image, applicationListItem.image) &&
+            Objects.equals(this.location, applicationListItem.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, logo, location);
+        return Objects.hash(id, name, description, image, location);
     }
 
     @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("class ApplicationBasicInformation {\n");
+        sb.append("class ApplicationListItem {\n");
         
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("    logo: ").append(toIndentedString(logo)).append("\n");
+        sb.append("    image: ").append(toIndentedString(image)).append("\n");
         sb.append("    location: ").append(toIndentedString(location)).append("\n");
         sb.append("}");
         return sb.toString();

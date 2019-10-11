@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.*;
 public class AccessTokenConfiguration  {
   
     private String type;
-    private Integer userAccessTokenExpiryInSeconds;
-    private Integer applicationAccessTokenExpiryInSeconds;
+    private Long userAccessTokenExpiryInSeconds;
+    private Long applicationAccessTokenExpiryInSeconds;
 
     /**
     **/
@@ -54,7 +54,7 @@ public class AccessTokenConfiguration  {
 
     /**
     **/
-    public AccessTokenConfiguration userAccessTokenExpiryInSeconds(Integer userAccessTokenExpiryInSeconds) {
+    public AccessTokenConfiguration userAccessTokenExpiryInSeconds(Long userAccessTokenExpiryInSeconds) {
 
         this.userAccessTokenExpiryInSeconds = userAccessTokenExpiryInSeconds;
         return this;
@@ -63,16 +63,16 @@ public class AccessTokenConfiguration  {
     @ApiModelProperty(example = "3600", value = "")
     @JsonProperty("userAccessTokenExpiryInSeconds")
     @Valid
-    public Integer getUserAccessTokenExpiryInSeconds() {
+    public Long getUserAccessTokenExpiryInSeconds() {
         return userAccessTokenExpiryInSeconds;
     }
-    public void setUserAccessTokenExpiryInSeconds(Integer userAccessTokenExpiryInSeconds) {
+    public void setUserAccessTokenExpiryInSeconds(Long userAccessTokenExpiryInSeconds) {
         this.userAccessTokenExpiryInSeconds = userAccessTokenExpiryInSeconds;
     }
 
     /**
     **/
-    public AccessTokenConfiguration applicationAccessTokenExpiryInSeconds(Integer applicationAccessTokenExpiryInSeconds) {
+    public AccessTokenConfiguration applicationAccessTokenExpiryInSeconds(Long applicationAccessTokenExpiryInSeconds) {
 
         this.applicationAccessTokenExpiryInSeconds = applicationAccessTokenExpiryInSeconds;
         return this;
@@ -81,10 +81,10 @@ public class AccessTokenConfiguration  {
     @ApiModelProperty(example = "3600", value = "")
     @JsonProperty("applicationAccessTokenExpiryInSeconds")
     @Valid
-    public Integer getApplicationAccessTokenExpiryInSeconds() {
+    public Long getApplicationAccessTokenExpiryInSeconds() {
         return applicationAccessTokenExpiryInSeconds;
     }
-    public void setApplicationAccessTokenExpiryInSeconds(Integer applicationAccessTokenExpiryInSeconds) {
+    public void setApplicationAccessTokenExpiryInSeconds(Long applicationAccessTokenExpiryInSeconds) {
         this.applicationAccessTokenExpiryInSeconds = applicationAccessTokenExpiryInSeconds;
     }
 

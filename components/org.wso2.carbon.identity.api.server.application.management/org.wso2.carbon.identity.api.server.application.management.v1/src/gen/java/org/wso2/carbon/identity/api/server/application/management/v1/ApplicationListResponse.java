@@ -22,7 +22,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationBasicInformation;
+import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationListItem;
+import org.wso2.carbon.identity.api.server.application.management.v1.Link;
 import javax.validation.constraints.*;
 
 
@@ -35,11 +36,14 @@ public class ApplicationListResponse  {
   
     private Integer totalResults;
     private Integer startIndex;
-    private Integer limitPerPage;
-    private List<ApplicationBasicInformation> applications = null;
+    private Integer count;
+    private List<ApplicationListItem> applications = null;
+
+    private List<Link> links = null;
 
 
     /**
+    * Number of results that match the listing operation.
     **/
     public ApplicationListResponse totalResults(Integer totalResults) {
 
@@ -47,7 +51,7 @@ public class ApplicationListResponse  {
         return this;
     }
     
-    @ApiModelProperty(example = "1", value = "")
+    @ApiModelProperty(example = "1", value = "Number of results that match the listing operation.")
     @JsonProperty("totalResults")
     @Valid
     public Integer getTotalResults() {
@@ -58,6 +62,7 @@ public class ApplicationListResponse  {
     }
 
     /**
+    * Index of the first element of the page, which will be equal to offset + 1.
     **/
     public ApplicationListResponse startIndex(Integer startIndex) {
 
@@ -65,7 +70,7 @@ public class ApplicationListResponse  {
         return this;
     }
     
-    @ApiModelProperty(example = "1", value = "")
+    @ApiModelProperty(example = "1", value = "Index of the first element of the page, which will be equal to offset + 1.")
     @JsonProperty("startIndex")
     @Valid
     public Integer getStartIndex() {
@@ -76,26 +81,27 @@ public class ApplicationListResponse  {
     }
 
     /**
+    * Number of elements in the returned page.
     **/
-    public ApplicationListResponse limitPerPage(Integer limitPerPage) {
+    public ApplicationListResponse count(Integer count) {
 
-        this.limitPerPage = limitPerPage;
+        this.count = count;
         return this;
     }
     
-    @ApiModelProperty(example = "10", value = "")
-    @JsonProperty("limitPerPage")
+    @ApiModelProperty(example = "10", value = "Number of elements in the returned page.")
+    @JsonProperty("count")
     @Valid
-    public Integer getLimitPerPage() {
-        return limitPerPage;
+    public Integer getCount() {
+        return count;
     }
-    public void setLimitPerPage(Integer limitPerPage) {
-        this.limitPerPage = limitPerPage;
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     /**
     **/
-    public ApplicationListResponse applications(List<ApplicationBasicInformation> applications) {
+    public ApplicationListResponse applications(List<ApplicationListItem> applications) {
 
         this.applications = applications;
         return this;
@@ -104,18 +110,44 @@ public class ApplicationListResponse  {
     @ApiModelProperty(value = "")
     @JsonProperty("applications")
     @Valid
-    public List<ApplicationBasicInformation> getApplications() {
+    public List<ApplicationListItem> getApplications() {
         return applications;
     }
-    public void setApplications(List<ApplicationBasicInformation> applications) {
+    public void setApplications(List<ApplicationListItem> applications) {
         this.applications = applications;
     }
 
-    public ApplicationListResponse addApplicationsItem(ApplicationBasicInformation applicationsItem) {
+    public ApplicationListResponse addApplicationsItem(ApplicationListItem applicationsItem) {
         if (this.applications == null) {
             this.applications = new ArrayList<>();
         }
         this.applications.add(applicationsItem);
+        return this;
+    }
+
+        /**
+    **/
+    public ApplicationListResponse links(List<Link> links) {
+
+        this.links = links;
+        return this;
+    }
+    
+    @ApiModelProperty(value = "")
+    @JsonProperty("links")
+    @Valid
+    public List<Link> getLinks() {
+        return links;
+    }
+    public void setLinks(List<Link> links) {
+        this.links = links;
+    }
+
+    public ApplicationListResponse addLinksItem(Link linksItem) {
+        if (this.links == null) {
+            this.links = new ArrayList<>();
+        }
+        this.links.add(linksItem);
         return this;
     }
 
@@ -133,13 +165,14 @@ public class ApplicationListResponse  {
         ApplicationListResponse applicationListResponse = (ApplicationListResponse) o;
         return Objects.equals(this.totalResults, applicationListResponse.totalResults) &&
             Objects.equals(this.startIndex, applicationListResponse.startIndex) &&
-            Objects.equals(this.limitPerPage, applicationListResponse.limitPerPage) &&
-            Objects.equals(this.applications, applicationListResponse.applications);
+            Objects.equals(this.count, applicationListResponse.count) &&
+            Objects.equals(this.applications, applicationListResponse.applications) &&
+            Objects.equals(this.links, applicationListResponse.links);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(totalResults, startIndex, limitPerPage, applications);
+        return Objects.hash(totalResults, startIndex, count, applications, links);
     }
 
     @Override
@@ -150,8 +183,9 @@ public class ApplicationListResponse  {
         
         sb.append("    totalResults: ").append(toIndentedString(totalResults)).append("\n");
         sb.append("    startIndex: ").append(toIndentedString(startIndex)).append("\n");
-        sb.append("    limitPerPage: ").append(toIndentedString(limitPerPage)).append("\n");
+        sb.append("    count: ").append(toIndentedString(count)).append("\n");
         sb.append("    applications: ").append(toIndentedString(applications)).append("\n");
+        sb.append("    links: ").append(toIndentedString(links)).append("\n");
         sb.append("}");
         return sb.toString();
     }

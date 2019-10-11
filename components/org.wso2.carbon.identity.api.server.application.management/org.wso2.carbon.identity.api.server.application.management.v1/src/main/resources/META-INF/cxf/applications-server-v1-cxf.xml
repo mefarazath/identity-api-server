@@ -16,8 +16,7 @@
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation=" http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <bean class="org.wso2.carbon.identity.api.server.application.management.v1.core.ServerApplicationManagementService"/>
     <bean class="org.wso2.carbon.identity.api.server.application.management.v1.impl.ApplicationsApiServiceImpl"/>
@@ -30,9 +29,15 @@
           class="org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementServiceHolder">
         <property name="oauthAdminService" ref="oauthAdminServiceFactoryBean"/>
     </bean>
+    <bean id="stsAdminServiceHolderBean"
+          class="org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementServiceHolder">
+        <property name="stsAdminService" ref="stsAdminServiceFactoryBean"/>
+    </bean>
 
     <bean id="applicationManagementServiceFactoryBean"
           class="org.wso2.carbon.identity.api.server.application.management.common.factory.ApplicationManagementOSGiServiceFactory"/>
     <bean id="oauthAdminServiceFactoryBean"
           class="org.wso2.carbon.identity.api.server.application.management.common.factory.OAuthAdminOSGiServiceFactory"/>
+    <bean id="stsAdminServiceFactoryBean"
+          class="org.wso2.carbon.identity.api.server.application.management.common.factory.STSAdminOSGiServiceFactory"/>
 </beans>

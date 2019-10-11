@@ -33,14 +33,14 @@ import javax.xml.bind.annotation.*;
 
 public class IdTokenConfiguration  {
   
-    private Integer expiryInSeconds;
+    private Long expiryInSeconds;
     private List<String> audience = null;
 
     private IdTokenEncryptionConfiguration encryption;
 
     /**
     **/
-    public IdTokenConfiguration expiryInSeconds(Integer expiryInSeconds) {
+    public IdTokenConfiguration expiryInSeconds(Long expiryInSeconds) {
 
         this.expiryInSeconds = expiryInSeconds;
         return this;
@@ -49,10 +49,10 @@ public class IdTokenConfiguration  {
     @ApiModelProperty(example = "3600", value = "")
     @JsonProperty("expiryInSeconds")
     @Valid
-    public Integer getExpiryInSeconds() {
+    public Long getExpiryInSeconds() {
         return expiryInSeconds;
     }
-    public void setExpiryInSeconds(Integer expiryInSeconds) {
+    public void setExpiryInSeconds(Long expiryInSeconds) {
         this.expiryInSeconds = expiryInSeconds;
     }
 

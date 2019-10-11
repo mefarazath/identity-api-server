@@ -30,9 +30,9 @@ paths:
         - $ref: '#/components/parameters/limitQueryParam'
         - $ref: '#/components/parameters/offsetQueryParam'
         - $ref: '#/components/parameters/filterQueryParam'
-        - $ref: '#/components/parameters/sortQueryParam'
+        - $ref: '#/components/parameters/sortOrderQueryParam'
         - $ref: '#/components/parameters/sortByQueryParam'
-        - $ref: '#/components/parameters/requiredAttributesQueryParam'
+        - $ref: '#/components/parameters/attributesQueryParam'
       responses:
         '200':
           description: OK
@@ -94,10 +94,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApplicationRequest'
+              $ref: '#/components/schemas/Application'
           application/xml:
             schema:
-              $ref: '#/components/schemas/ApplicationRequest'
+              $ref: '#/components/schemas/Application'
         description: This represents the application to be created.
         required: true
       responses:
@@ -111,7 +111,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApplicationResponse'
+                $ref: '#/components/schemas/Application'
         '400':
           description: Bad Request
           content:
@@ -168,10 +168,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApplicationResponse'
+                $ref: '#/components/schemas/Application'
             application/xml:
               schema:
-                $ref: '#/components/schemas/ApplicationResponse'
+                $ref: '#/components/schemas/Application'
         '400':
           description: Bad Request
           content:
@@ -246,7 +246,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApplicationResponse'
+                $ref: '#/components/schemas/Application'
         '400':
           description: Bad Request
           content:
@@ -284,7 +284,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApplicationResponse'
+              $ref: '#/components/schemas/Application'
         description: This represents the application to be updated.
         required: true
     delete:
@@ -2615,11 +2615,14 @@ paths:
       x-wso2-request: ''
       x-wso2-response: |
         "HTTP/1.1 200 Ok"
+
 servers:
-  - url: 'https://iam.example.com/t/{tenant-domain}/api/server/v1'
+  - url: 'https://{server-url}/t/{tenant-domain}/api/server/v1'
     variables:
       tenant-domain:
-        default: carbon.super
+        default: "carbon.super"
+      server-url:
+        default: "localhost:9443"
 
 components:
   parameters:
@@ -2649,9 +2652,9 @@ components:
         Condition to filter the retrival of records.
       schema:
         type: string
-    sortQueryParam:
+    sortOrderQueryParam:
       in: query
-      name: sort
+      name: sortOrder
       required: false
       description: |
         Define the order in which the retrieved records should be sorted.
@@ -2670,9 +2673,9 @@ components:
         _This parameter is not supported yet._
       schema:
         type: string
-    requiredAttributesQueryParam:
+    attributesQueryParam:
       in: query
-      name: requiredAttributes
+      name: attributes
       required: false
       description: |
         Specifies the required parameters in the response
@@ -2691,23 +2694,43 @@ components:
           tokenUrl: 'http://localhost:9763/oauth2/token'
           scopes: {}
   schemas:
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          example: "applications?offset=10&limit=10"
+        rel:
+          type: string
+          example: "next"
+
+
     ApplicationListResponse:
       type: object
       properties:
         totalResults:
           type: integer
+          description: "Number of results that match the listing operation."
           example: 1
         startIndex:
           type: integer
+          description: "Index of the first element of the page, which will be equal to offset + 1."
           example: 1
-        limitPerPage:
+        count:
           type: integer
+          description: "Number of elements in the returned page."
           example: 10
         applications:
           type: array
           items:
-            $ref: '#/components/schemas/ApplicationBasicInformation'
-    ApplicationBasicInformation:
+            $ref: '#/components/schemas/ApplicationListItem'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+
+
+    ApplicationListItem:
       type: object
       properties:
         id:
@@ -2719,18 +2742,22 @@ components:
         description:
           type: string
           example: Application representing user portal
-        logo:
+        image:
           type: string
           example: 'https://example.com/logo/my-logo.png'
         location:
           type: string
-          example: >-
-            "https://iam.example.com/t/wso2.com/api/server/v1/applications/85e3f4b8-0d22-4181-b1e3-1651f71b88bd"
-    ApplicationRequest:
+          example: "https://iam.example.com/t/wso2.com/api/server/v1/applications/85e3f4b8-0d22-4181-b1e3-1651f71b88bd"
+
+    Application:
       type: object
       required:
         - name
       properties:
+        id:
+          type: string
+          example: "394b8adcce24c64a8a09a0d80abf8c337bd253de"
+          readOnly: true
         name:
           type: string
           example: pickup
@@ -2743,10 +2770,6 @@ components:
         image:
           type: string
           example: 'https://example.com/logo/my-logo.png'
-        properties:
-          type: array
-          items:
-            $ref: '#/components/schemas/Property'
         claimConfiguration:
           $ref: '#/components/schemas/ClaimConfiguration'
         inboundProtocolConfiguration:
@@ -2758,75 +2781,12 @@ components:
         provisioningConfigurations:
           $ref: '#/components/schemas/ProvisioningConfiguration'
 
-    ApplicationResponse:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-              example: "394b8adcce24c64a8a09a0d80abf8c337bd253de"
-        - $ref: '#/components/schemas/ApplicationRequest'
-
-    # ApplicationResponse:
-    #   type: object
-    #   required:
-    #     - name
-    #   properties:
-    #     id:
-    #       type: string
-    #       example: 394b8adcce24c64a8a09a0d80abf8c337bd253de
-    #     name:
-    #       type: string
-    #       example: pickup
-    #     description:
-    #       type: string
-    #       example: This is the configuration for Pickup application.
-    #     homePage:
-    #       type: string
-    #       example: 'https://example.com'
-    #     logo:
-    #       type: string
-    #       example: 'https://example.com/logo/my-logo.png'
-    #     owner:
-    #       type: string
-    #       example: app-admin@wso2.com
-    #     spProperties:
-    #       type: array
-    #       items:
-    #         $ref: '#/components/schemas/Property'
-    #     claimConfiguration:
-    #       $ref: '#/components/schemas/ClaimConfiguration'
-    #     permissionConfiguration:
-    #       $ref: '#/components/schemas/ApplicationPermissions'
-    #     inboundProtocols:
-    #       $ref: '#/components/schemas/InboundProtocols'
-    #     authenticationSequence:
-    #       $ref: '#/components/schemas/AuthenticationSequence'
-    #     advancedConfigurations:
-    #       $ref: '#/components/schemas/AdvancedApplicationConfiguration'
-    #     provisioningConfigurations:
-    #       $ref: '#/components/schemas/ProvisioningConfiguration'
-
     ResidentApplication:
       type: object
       properties:
         provisioningConfigurations:
           $ref: '#/components/schemas/ProvisioningConfiguration'
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          example: AAA-00000
-        message:
-          type: string
-          example: Some error message.
-        description:
-          type: string
-          example: Some error description.
-        traceId:
-          type: string
-          example: e0fbcfeb-3617-43c4-8dd0-7b7d38e13047
+
     ProvisioningConfiguration:
       type: object
       properties:
@@ -2877,15 +2837,16 @@ components:
         saas:
           type: boolean
           example: false
-          description: Whether this application is allowed to be accessed across tenants
+          description: Decide whether this application is allowed to be accessed across tenants.
         certificate:
           $ref: '#/components/schemas/Certificate'
         skipConsent:
           type: boolean
           example: false
-        returnAuthenticatedListOfIdentityProviders:
+        returnAuthenticatedIdpList:
           type: boolean
           example: false
+          description: Decide whether authenticated identity provider list needs to returned in the authentication response.
         enableAuthorization:
           type: boolean
           example: true
@@ -2895,13 +2856,13 @@ components:
         type:
           type: string
           enum:
-            - jwks
-            - pem
+            - JWKS
+            - PEM
         value:
           type: string
           description: >-
-            Certificate value. If type is jwks, value should be jwks URL. If
-            type is pem, value should be the certificate in PEM format.
+            Certificate value. If type is JWKS, value should be jwks URL. If
+            type is PEM, value should be the certificate in PEM format.
     InboundProtocols:
       type: object
       properties:
@@ -3027,14 +2988,7 @@ components:
         localClaimUri:
           type: string
           example: 'http://wso2.org/claims/givenname'
-    # ApplicationPermissions:
-    #   type: object
-    #   properties:
-    #     permissions:
-    #       type: array
-    #       items:
-    #         type: string
-    #         example: pickup-permission
+
     SAML2Configuration:
       type: object
       properties:
@@ -3092,6 +3046,7 @@ components:
         enableIdpInitiatedSingleLogOut:
           type: boolean
           default: false
+
     OpenIDConnectConfiguration:
       type: object
       properties:
@@ -3104,11 +3059,8 @@ components:
           enum:
             - ACTIVE
             - REVOKED
+          readOnly: true
           default: ACTIVE
-        version:
-          type: string
-          description: Possible values are '2.0' and '1.0a'
-          default: '2.0'
         grantTypes:
           type: array
           example:
@@ -3179,17 +3131,21 @@ components:
           example: JWT
         userAccessTokenExpiryInSeconds:
           type: integer
+          format: int64
           example: 3600
         applicationAccessTokenExpiryInSeconds:
           type: integer
+          format: int64
           example: 3600
     RefreshTokenConfiguration:
       type: object
       properties:
         expiryInSeconds:
           type: integer
+          format: int64
           example: 86400
         renewRefreshToken:
+          description: "Decideds the refresh token needs to renewed during refresh grant flow"
           type: boolean
           example: true
     IdTokenConfiguration:
@@ -3197,6 +3153,7 @@ components:
       properties:
         expiryInSeconds:
           type: integer
+          format: int64
           example: 3600
         audience:
           type: array
@@ -3223,18 +3180,27 @@ components:
     OIDCLogoutConfiguration:
       type: object
       properties:
-        backChannelLogout:
-          $ref: '#/components/schemas/OIDCBackChannelLogoutConfig'
-    OIDCBackChannelLogoutConfig:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-          example: false
+        # backChannelLogout:
+        #   $ref: '#/components/schemas/OIDCBackChannelLogoutConfig'
         backChannelLogoutUrl:
           type: string
-          example: 'https://app.example.com/backchannellogout/callback'
+          example: 'https://app.example.com/backchannel/callback'
+        frontChannelLogoutUrl:
+          type: string
+          example: 'https://app.example.com/frontchannel/callback'
+
+    # OIDCBackChannelLogoutConfig:
+    #   type: object
+    #   properties:
+    #     # enabled:
+    #     #   type: boolean
+    #     #   default: false
+    #     #   example: false
+    #     backChannelLogoutUrl:
+    #       type: string
+    #       example: 'https://app.example.com/backchannellogout/callback'
+
+
     PassiveStsConfiguration:
       type: object
       properties:
@@ -3245,13 +3211,16 @@ components:
     WSTrustConfiguration:
       type: object
       required:
-        - endpointAddress
+        - audience
         - certificateAlias
       properties:
-        endpointAddress:
+        audience:
           type: string
+          description: Audience value of the trusted service
+          example: https://wstrust.endpoint.com
         certificateAlias:
           type: string
+          example: "wso2carbon"
     # KerberosKDCParameters:
     #   type: object
     #   required:
@@ -3268,10 +3237,14 @@ components:
       type: object
       required:
         - name
+        - inboundKey
       properties:
         name:
           type: string
           example: custom-wso2-inbound
+        inboundKey:
+          type: string
+          example: custom-wso2-inbound-id
         properties:
           type: array
           items:
@@ -3319,3 +3292,19 @@ components:
         authenticator:
           type: string
           example: basic
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: AAA-00000
+        message:
+          type: string
+          example: Some error message.
+        description:
+          type: string
+          example: Some error description.
+        traceId:
+          type: string
+          example: e0fbcfeb-3617-43c4-8dd0-7b7d38e13047

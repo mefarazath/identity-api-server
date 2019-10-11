@@ -28,26 +28,45 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.*;
 
-public class ApplicationResponseAllOf  {
+public class Link  {
   
-    private String id;
+    private String href;
+    private String rel;
 
     /**
     **/
-    public ApplicationResponseAllOf id(String id) {
+    public Link href(String href) {
 
-        this.id = id;
+        this.href = href;
         return this;
     }
     
-    @ApiModelProperty(example = "394b8adcce24c64a8a09a0d80abf8c337bd253de", value = "")
-    @JsonProperty("id")
+    @ApiModelProperty(example = "applications?offset=10&limit=10", value = "")
+    @JsonProperty("href")
     @Valid
-    public String getId() {
-        return id;
+    public String getHref() {
+        return href;
     }
-    public void setId(String id) {
-        this.id = id;
+    public void setHref(String href) {
+        this.href = href;
+    }
+
+    /**
+    **/
+    public Link rel(String rel) {
+
+        this.rel = rel;
+        return this;
+    }
+    
+    @ApiModelProperty(example = "next", value = "")
+    @JsonProperty("rel")
+    @Valid
+    public String getRel() {
+        return rel;
+    }
+    public void setRel(String rel) {
+        this.rel = rel;
     }
 
 
@@ -61,22 +80,24 @@ public class ApplicationResponseAllOf  {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ApplicationResponseAllOf applicationResponseAllOf = (ApplicationResponseAllOf) o;
-        return Objects.equals(this.id, applicationResponseAllOf.id);
+        Link link = (Link) o;
+        return Objects.equals(this.href, link.href) &&
+            Objects.equals(this.rel, link.rel);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(href, rel);
     }
 
     @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("class ApplicationResponseAllOf {\n");
+        sb.append("class Link {\n");
         
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
+        sb.append("    href: ").append(toIndentedString(href)).append("\n");
+        sb.append("    rel: ").append(toIndentedString(rel)).append("\n");
         sb.append("}");
         return sb.toString();
     }

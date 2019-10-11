@@ -34,11 +34,11 @@ public class AdvancedApplicationConfiguration  {
     private Boolean saas;
     private Certificate certificate;
     private Boolean skipConsent;
-    private Boolean returnAuthenticatedListOfIdentityProviders;
+    private Boolean returnAuthenticatedIdpList;
     private Boolean enableAuthorization;
 
     /**
-    * Whether this application is allowed to be accessed across tenants
+    * Decide whether this application is allowed to be accessed across tenants.
     **/
     public AdvancedApplicationConfiguration saas(Boolean saas) {
 
@@ -46,7 +46,7 @@ public class AdvancedApplicationConfiguration  {
         return this;
     }
     
-    @ApiModelProperty(example = "false", value = "Whether this application is allowed to be accessed across tenants")
+    @ApiModelProperty(example = "false", value = "Decide whether this application is allowed to be accessed across tenants.")
     @JsonProperty("saas")
     @Valid
     public Boolean getSaas() {
@@ -93,21 +93,22 @@ public class AdvancedApplicationConfiguration  {
     }
 
     /**
+    * Decide whether authenticated identity provider list needs to returned in the authentication response.
     **/
-    public AdvancedApplicationConfiguration returnAuthenticatedListOfIdentityProviders(Boolean returnAuthenticatedListOfIdentityProviders) {
+    public AdvancedApplicationConfiguration returnAuthenticatedIdpList(Boolean returnAuthenticatedIdpList) {
 
-        this.returnAuthenticatedListOfIdentityProviders = returnAuthenticatedListOfIdentityProviders;
+        this.returnAuthenticatedIdpList = returnAuthenticatedIdpList;
         return this;
     }
     
-    @ApiModelProperty(example = "false", value = "")
-    @JsonProperty("returnAuthenticatedListOfIdentityProviders")
+    @ApiModelProperty(example = "false", value = "Decide whether authenticated identity provider list needs to returned in the authentication response.")
+    @JsonProperty("returnAuthenticatedIdpList")
     @Valid
-    public Boolean getReturnAuthenticatedListOfIdentityProviders() {
-        return returnAuthenticatedListOfIdentityProviders;
+    public Boolean getReturnAuthenticatedIdpList() {
+        return returnAuthenticatedIdpList;
     }
-    public void setReturnAuthenticatedListOfIdentityProviders(Boolean returnAuthenticatedListOfIdentityProviders) {
-        this.returnAuthenticatedListOfIdentityProviders = returnAuthenticatedListOfIdentityProviders;
+    public void setReturnAuthenticatedIdpList(Boolean returnAuthenticatedIdpList) {
+        this.returnAuthenticatedIdpList = returnAuthenticatedIdpList;
     }
 
     /**
@@ -143,13 +144,13 @@ public class AdvancedApplicationConfiguration  {
         return Objects.equals(this.saas, advancedApplicationConfiguration.saas) &&
             Objects.equals(this.certificate, advancedApplicationConfiguration.certificate) &&
             Objects.equals(this.skipConsent, advancedApplicationConfiguration.skipConsent) &&
-            Objects.equals(this.returnAuthenticatedListOfIdentityProviders, advancedApplicationConfiguration.returnAuthenticatedListOfIdentityProviders) &&
+            Objects.equals(this.returnAuthenticatedIdpList, advancedApplicationConfiguration.returnAuthenticatedIdpList) &&
             Objects.equals(this.enableAuthorization, advancedApplicationConfiguration.enableAuthorization);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(saas, certificate, skipConsent, returnAuthenticatedListOfIdentityProviders, enableAuthorization);
+        return Objects.hash(saas, certificate, skipConsent, returnAuthenticatedIdpList, enableAuthorization);
     }
 
     @Override
@@ -161,7 +162,7 @@ public class AdvancedApplicationConfiguration  {
         sb.append("    saas: ").append(toIndentedString(saas)).append("\n");
         sb.append("    certificate: ").append(toIndentedString(certificate)).append("\n");
         sb.append("    skipConsent: ").append(toIndentedString(skipConsent)).append("\n");
-        sb.append("    returnAuthenticatedListOfIdentityProviders: ").append(toIndentedString(returnAuthenticatedListOfIdentityProviders)).append("\n");
+        sb.append("    returnAuthenticatedIdpList: ").append(toIndentedString(returnAuthenticatedIdpList)).append("\n");
         sb.append("    enableAuthorization: ").append(toIndentedString(enableAuthorization)).append("\n");
         sb.append("}");
         return sb.toString();

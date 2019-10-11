@@ -21,9 +21,8 @@ import org.wso2.carbon.identity.api.server.application.management.v1.*;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.wso2.carbon.identity.api.server.application.management.v1.AdvancedApplicationConfiguration;
+import org.wso2.carbon.identity.api.server.application.management.v1.Application;
 import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationListResponse;
-import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationRequest;
-import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationResponse;
 import org.wso2.carbon.identity.api.server.application.management.v1.AuthenticationSequence;
 import org.wso2.carbon.identity.api.server.application.management.v1.ClaimConfiguration;
 import org.wso2.carbon.identity.api.server.application.management.v1.CustomInboundProtocolConfiguration;
@@ -40,7 +39,7 @@ import javax.ws.rs.core.Response;
 
 public interface ApplicationsApiService {
 
-      public Response createApplication(ApplicationRequest applicationRequest, String template);
+      public Response createApplication(Application application, String template);
 
       public Response deleteAdvancedConfigurations(String applicationId);
 
@@ -66,7 +65,7 @@ public interface ApplicationsApiService {
 
       public Response getAdvancedConfigurations(String applicationId);
 
-      public Response getAllApplications(Integer limit, Integer offset, String filter, String sort, String sortBy, String requiredAttributes);
+      public Response getAllApplications(Integer limit, Integer offset, String filter, String sortOrder, String sortBy, String attributes);
 
       public Response getApplication(String applicationId);
 
@@ -96,7 +95,7 @@ public interface ApplicationsApiService {
 
       public Response updateAdvancedConfigurations(String applicationId, AdvancedApplicationConfiguration advancedApplicationConfiguration);
 
-      public Response updateApplication(String applicationId, ApplicationResponse applicationResponse);
+      public Response updateApplication(String applicationId, Application application);
 
       public Response updateAuthenticationSequence(String applicationId, AuthenticationSequence authenticationSequence);
 

@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.wso2.carbon.identity.api.server.application.management.v1.OIDCBackChannelLogoutConfig;
 import javax.validation.constraints.*;
 
 
@@ -31,24 +30,43 @@ import javax.xml.bind.annotation.*;
 
 public class OIDCLogoutConfiguration  {
   
-    private OIDCBackChannelLogoutConfig backChannelLogout;
+    private String backChannelLogoutUrl;
+    private String frontChannelLogoutUrl;
 
     /**
     **/
-    public OIDCLogoutConfiguration backChannelLogout(OIDCBackChannelLogoutConfig backChannelLogout) {
+    public OIDCLogoutConfiguration backChannelLogoutUrl(String backChannelLogoutUrl) {
 
-        this.backChannelLogout = backChannelLogout;
+        this.backChannelLogoutUrl = backChannelLogoutUrl;
         return this;
     }
     
-    @ApiModelProperty(value = "")
-    @JsonProperty("backChannelLogout")
+    @ApiModelProperty(example = "https://app.example.com/backchannel/callback", value = "")
+    @JsonProperty("backChannelLogoutUrl")
     @Valid
-    public OIDCBackChannelLogoutConfig getBackChannelLogout() {
-        return backChannelLogout;
+    public String getBackChannelLogoutUrl() {
+        return backChannelLogoutUrl;
     }
-    public void setBackChannelLogout(OIDCBackChannelLogoutConfig backChannelLogout) {
-        this.backChannelLogout = backChannelLogout;
+    public void setBackChannelLogoutUrl(String backChannelLogoutUrl) {
+        this.backChannelLogoutUrl = backChannelLogoutUrl;
+    }
+
+    /**
+    **/
+    public OIDCLogoutConfiguration frontChannelLogoutUrl(String frontChannelLogoutUrl) {
+
+        this.frontChannelLogoutUrl = frontChannelLogoutUrl;
+        return this;
+    }
+    
+    @ApiModelProperty(example = "https://app.example.com/frontchannel/callback", value = "")
+    @JsonProperty("frontChannelLogoutUrl")
+    @Valid
+    public String getFrontChannelLogoutUrl() {
+        return frontChannelLogoutUrl;
+    }
+    public void setFrontChannelLogoutUrl(String frontChannelLogoutUrl) {
+        this.frontChannelLogoutUrl = frontChannelLogoutUrl;
     }
 
 
@@ -63,12 +81,13 @@ public class OIDCLogoutConfiguration  {
             return false;
         }
         OIDCLogoutConfiguration oiDCLogoutConfiguration = (OIDCLogoutConfiguration) o;
-        return Objects.equals(this.backChannelLogout, oiDCLogoutConfiguration.backChannelLogout);
+        return Objects.equals(this.backChannelLogoutUrl, oiDCLogoutConfiguration.backChannelLogoutUrl) &&
+            Objects.equals(this.frontChannelLogoutUrl, oiDCLogoutConfiguration.frontChannelLogoutUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(backChannelLogout);
+        return Objects.hash(backChannelLogoutUrl, frontChannelLogoutUrl);
     }
 
     @Override
@@ -77,7 +96,8 @@ public class OIDCLogoutConfiguration  {
         StringBuilder sb = new StringBuilder();
         sb.append("class OIDCLogoutConfiguration {\n");
         
-        sb.append("    backChannelLogout: ").append(toIndentedString(backChannelLogout)).append("\n");
+        sb.append("    backChannelLogoutUrl: ").append(toIndentedString(backChannelLogoutUrl)).append("\n");
+        sb.append("    frontChannelLogoutUrl: ").append(toIndentedString(frontChannelLogoutUrl)).append("\n");
         sb.append("}");
         return sb.toString();
     }

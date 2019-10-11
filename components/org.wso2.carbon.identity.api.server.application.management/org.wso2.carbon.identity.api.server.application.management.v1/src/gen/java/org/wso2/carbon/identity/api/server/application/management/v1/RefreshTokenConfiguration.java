@@ -30,12 +30,12 @@ import javax.xml.bind.annotation.*;
 
 public class RefreshTokenConfiguration  {
   
-    private Integer expiryInSeconds;
+    private Long expiryInSeconds;
     private Boolean renewRefreshToken;
 
     /**
     **/
-    public RefreshTokenConfiguration expiryInSeconds(Integer expiryInSeconds) {
+    public RefreshTokenConfiguration expiryInSeconds(Long expiryInSeconds) {
 
         this.expiryInSeconds = expiryInSeconds;
         return this;
@@ -44,14 +44,15 @@ public class RefreshTokenConfiguration  {
     @ApiModelProperty(example = "86400", value = "")
     @JsonProperty("expiryInSeconds")
     @Valid
-    public Integer getExpiryInSeconds() {
+    public Long getExpiryInSeconds() {
         return expiryInSeconds;
     }
-    public void setExpiryInSeconds(Integer expiryInSeconds) {
+    public void setExpiryInSeconds(Long expiryInSeconds) {
         this.expiryInSeconds = expiryInSeconds;
     }
 
     /**
+    * Decideds the refresh token needs to renewed during refresh grant flow
     **/
     public RefreshTokenConfiguration renewRefreshToken(Boolean renewRefreshToken) {
 
@@ -59,7 +60,7 @@ public class RefreshTokenConfiguration  {
         return this;
     }
     
-    @ApiModelProperty(example = "true", value = "")
+    @ApiModelProperty(example = "true", value = "Decideds the refresh token needs to renewed during refresh grant flow")
     @JsonProperty("renewRefreshToken")
     @Valid
     public Boolean getRenewRefreshToken() {

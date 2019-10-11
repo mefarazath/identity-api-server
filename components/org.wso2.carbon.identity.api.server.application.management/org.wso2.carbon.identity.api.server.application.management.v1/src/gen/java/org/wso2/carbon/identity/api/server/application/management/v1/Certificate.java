@@ -35,7 +35,7 @@ public class Certificate  {
 @XmlEnum(String.class)
 public enum TypeEnum {
 
-    @XmlEnumValue("jwks") JWKS(String.valueOf("jwks")), @XmlEnumValue("pem") PEM(String.valueOf("pem"));
+    @XmlEnumValue("JWKS") JWKS(String.valueOf("JWKS")), @XmlEnumValue("PEM") PEM(String.valueOf("PEM"));
 
 
     private String value;
@@ -85,7 +85,7 @@ public enum TypeEnum {
     }
 
     /**
-    * Certificate value. If type is jwks, value should be jwks URL. If type is pem, value should be the certificate in PEM format.
+    * Certificate value. If type is JWKS, value should be jwks URL. If type is PEM, value should be the certificate in PEM format.
     **/
     public Certificate value(String value) {
 
@@ -93,7 +93,7 @@ public enum TypeEnum {
         return this;
     }
     
-    @ApiModelProperty(value = "Certificate value. If type is jwks, value should be jwks URL. If type is pem, value should be the certificate in PEM format.")
+    @ApiModelProperty(value = "Certificate value. If type is JWKS, value should be jwks URL. If type is PEM, value should be the certificate in PEM format.")
     @JsonProperty("value")
     @Valid
     public String getValue() {

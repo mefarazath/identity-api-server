@@ -30,27 +30,28 @@ import javax.xml.bind.annotation.*;
 
 public class WSTrustConfiguration  {
   
-    private String endpointAddress;
+    private String audience;
     private String certificateAlias;
 
     /**
+    * Audience value of the trusted service
     **/
-    public WSTrustConfiguration endpointAddress(String endpointAddress) {
+    public WSTrustConfiguration audience(String audience) {
 
-        this.endpointAddress = endpointAddress;
+        this.audience = audience;
         return this;
     }
     
-    @ApiModelProperty(required = true, value = "")
-    @JsonProperty("endpointAddress")
+    @ApiModelProperty(example = "https://wstrust.endpoint.com", required = true, value = "Audience value of the trusted service")
+    @JsonProperty("audience")
     @Valid
-    @NotNull(message = "Property endpointAddress cannot be null.")
+    @NotNull(message = "Property audience cannot be null.")
 
-    public String getEndpointAddress() {
-        return endpointAddress;
+    public String getAudience() {
+        return audience;
     }
-    public void setEndpointAddress(String endpointAddress) {
-        this.endpointAddress = endpointAddress;
+    public void setAudience(String audience) {
+        this.audience = audience;
     }
 
     /**
@@ -61,7 +62,7 @@ public class WSTrustConfiguration  {
         return this;
     }
     
-    @ApiModelProperty(required = true, value = "")
+    @ApiModelProperty(example = "wso2carbon", required = true, value = "")
     @JsonProperty("certificateAlias")
     @Valid
     @NotNull(message = "Property certificateAlias cannot be null.")
@@ -85,13 +86,13 @@ public class WSTrustConfiguration  {
             return false;
         }
         WSTrustConfiguration wsTrustConfiguration = (WSTrustConfiguration) o;
-        return Objects.equals(this.endpointAddress, wsTrustConfiguration.endpointAddress) &&
+        return Objects.equals(this.audience, wsTrustConfiguration.audience) &&
             Objects.equals(this.certificateAlias, wsTrustConfiguration.certificateAlias);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(endpointAddress, certificateAlias);
+        return Objects.hash(audience, certificateAlias);
     }
 
     @Override
@@ -100,7 +101,7 @@ public class WSTrustConfiguration  {
         StringBuilder sb = new StringBuilder();
         sb.append("class WSTrustConfiguration {\n");
         
-        sb.append("    endpointAddress: ").append(toIndentedString(endpointAddress)).append("\n");
+        sb.append("    audience: ").append(toIndentedString(audience)).append("\n");
         sb.append("    certificateAlias: ").append(toIndentedString(certificateAlias)).append("\n");
         sb.append("}");
         return sb.toString();
