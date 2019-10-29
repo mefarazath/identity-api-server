@@ -33,13 +33,13 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.*;
 
-public class Application  {
+public class ApplicationModel  {
   
     private String id;
     private String name;
     private String description;
-    private String homePage;
-    private String image;
+    private String imageUrl;
+    private String loginUrl;
     private ClaimConfiguration claimConfiguration;
     private InboundProtocols inboundProtocolConfiguration;
     private AuthenticationSequence authenticationSequence;
@@ -48,7 +48,7 @@ public class Application  {
 
     /**
     **/
-    public Application id(String id) {
+    public ApplicationModel id(String id) {
 
         this.id = id;
         return this;
@@ -66,7 +66,7 @@ public class Application  {
 
     /**
     **/
-    public Application name(String name) {
+    public ApplicationModel name(String name) {
 
         this.name = name;
         return this;
@@ -86,7 +86,7 @@ public class Application  {
 
     /**
     **/
-    public Application description(String description) {
+    public ApplicationModel description(String description) {
 
         this.description = description;
         return this;
@@ -104,43 +104,43 @@ public class Application  {
 
     /**
     **/
-    public Application homePage(String homePage) {
+    public ApplicationModel imageUrl(String imageUrl) {
 
-        this.homePage = homePage;
-        return this;
-    }
-    
-    @ApiModelProperty(example = "https://example.com", value = "")
-    @JsonProperty("homePage")
-    @Valid
-    public String getHomePage() {
-        return homePage;
-    }
-    public void setHomePage(String homePage) {
-        this.homePage = homePage;
-    }
-
-    /**
-    **/
-    public Application image(String image) {
-
-        this.image = image;
+        this.imageUrl = imageUrl;
         return this;
     }
     
     @ApiModelProperty(example = "https://example.com/logo/my-logo.png", value = "")
-    @JsonProperty("image")
+    @JsonProperty("imageUrl")
     @Valid
-    public String getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     /**
     **/
-    public Application claimConfiguration(ClaimConfiguration claimConfiguration) {
+    public ApplicationModel loginUrl(String loginUrl) {
+
+        this.loginUrl = loginUrl;
+        return this;
+    }
+    
+    @ApiModelProperty(example = "https://example.com/login", value = "")
+    @JsonProperty("loginUrl")
+    @Valid
+    public String getLoginUrl() {
+        return loginUrl;
+    }
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
+    }
+
+    /**
+    **/
+    public ApplicationModel claimConfiguration(ClaimConfiguration claimConfiguration) {
 
         this.claimConfiguration = claimConfiguration;
         return this;
@@ -158,7 +158,7 @@ public class Application  {
 
     /**
     **/
-    public Application inboundProtocolConfiguration(InboundProtocols inboundProtocolConfiguration) {
+    public ApplicationModel inboundProtocolConfiguration(InboundProtocols inboundProtocolConfiguration) {
 
         this.inboundProtocolConfiguration = inboundProtocolConfiguration;
         return this;
@@ -176,7 +176,7 @@ public class Application  {
 
     /**
     **/
-    public Application authenticationSequence(AuthenticationSequence authenticationSequence) {
+    public ApplicationModel authenticationSequence(AuthenticationSequence authenticationSequence) {
 
         this.authenticationSequence = authenticationSequence;
         return this;
@@ -194,7 +194,7 @@ public class Application  {
 
     /**
     **/
-    public Application advancedConfigurations(AdvancedApplicationConfiguration advancedConfigurations) {
+    public ApplicationModel advancedConfigurations(AdvancedApplicationConfiguration advancedConfigurations) {
 
         this.advancedConfigurations = advancedConfigurations;
         return this;
@@ -212,7 +212,7 @@ public class Application  {
 
     /**
     **/
-    public Application provisioningConfigurations(ProvisioningConfiguration provisioningConfigurations) {
+    public ApplicationModel provisioningConfigurations(ProvisioningConfiguration provisioningConfigurations) {
 
         this.provisioningConfigurations = provisioningConfigurations;
         return this;
@@ -239,35 +239,35 @@ public class Application  {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Application application = (Application) o;
-        return Objects.equals(this.id, application.id) &&
-            Objects.equals(this.name, application.name) &&
-            Objects.equals(this.description, application.description) &&
-            Objects.equals(this.homePage, application.homePage) &&
-            Objects.equals(this.image, application.image) &&
-            Objects.equals(this.claimConfiguration, application.claimConfiguration) &&
-            Objects.equals(this.inboundProtocolConfiguration, application.inboundProtocolConfiguration) &&
-            Objects.equals(this.authenticationSequence, application.authenticationSequence) &&
-            Objects.equals(this.advancedConfigurations, application.advancedConfigurations) &&
-            Objects.equals(this.provisioningConfigurations, application.provisioningConfigurations);
+        ApplicationModel applicationModel = (ApplicationModel) o;
+        return Objects.equals(this.id, applicationModel.id) &&
+            Objects.equals(this.name, applicationModel.name) &&
+            Objects.equals(this.description, applicationModel.description) &&
+            Objects.equals(this.imageUrl, applicationModel.imageUrl) &&
+            Objects.equals(this.loginUrl, applicationModel.loginUrl) &&
+            Objects.equals(this.claimConfiguration, applicationModel.claimConfiguration) &&
+            Objects.equals(this.inboundProtocolConfiguration, applicationModel.inboundProtocolConfiguration) &&
+            Objects.equals(this.authenticationSequence, applicationModel.authenticationSequence) &&
+            Objects.equals(this.advancedConfigurations, applicationModel.advancedConfigurations) &&
+            Objects.equals(this.provisioningConfigurations, applicationModel.provisioningConfigurations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, homePage, image, claimConfiguration, inboundProtocolConfiguration, authenticationSequence, advancedConfigurations, provisioningConfigurations);
+        return Objects.hash(id, name, description, imageUrl, loginUrl, claimConfiguration, inboundProtocolConfiguration, authenticationSequence, advancedConfigurations, provisioningConfigurations);
     }
 
     @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("class Application {\n");
+        sb.append("class ApplicationModel {\n");
         
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("    homePage: ").append(toIndentedString(homePage)).append("\n");
-        sb.append("    image: ").append(toIndentedString(image)).append("\n");
+        sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
+        sb.append("    loginUrl: ").append(toIndentedString(loginUrl)).append("\n");
         sb.append("    claimConfiguration: ").append(toIndentedString(claimConfiguration)).append("\n");
         sb.append("    inboundProtocolConfiguration: ").append(toIndentedString(inboundProtocolConfiguration)).append("\n");
         sb.append("    authenticationSequence: ").append(toIndentedString(authenticationSequence)).append("\n");

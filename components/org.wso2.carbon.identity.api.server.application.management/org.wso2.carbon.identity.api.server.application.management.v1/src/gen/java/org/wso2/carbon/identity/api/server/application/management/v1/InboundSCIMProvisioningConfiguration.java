@@ -28,33 +28,14 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.*;
 
-public class InboundProvisioningSCIMConfiguration  {
+public class InboundSCIMProvisioningConfiguration  {
   
-    private String provisioningUserstoreDomain;
     private Boolean proxyMode;
-
-    /**
-    * This property becomes only applicable if the proxy-mode config is set to false
-    **/
-    public InboundProvisioningSCIMConfiguration provisioningUserstoreDomain(String provisioningUserstoreDomain) {
-
-        this.provisioningUserstoreDomain = provisioningUserstoreDomain;
-        return this;
-    }
-    
-    @ApiModelProperty(example = "PRIMARY", value = "This property becomes only applicable if the proxy-mode config is set to false")
-    @JsonProperty("provisioningUserstoreDomain")
-    @Valid
-    public String getProvisioningUserstoreDomain() {
-        return provisioningUserstoreDomain;
-    }
-    public void setProvisioningUserstoreDomain(String provisioningUserstoreDomain) {
-        this.provisioningUserstoreDomain = provisioningUserstoreDomain;
-    }
+    private String provisioningUserstoreDomain;
 
     /**
     **/
-    public InboundProvisioningSCIMConfiguration proxyMode(Boolean proxyMode) {
+    public InboundSCIMProvisioningConfiguration proxyMode(Boolean proxyMode) {
 
         this.proxyMode = proxyMode;
         return this;
@@ -70,6 +51,25 @@ public class InboundProvisioningSCIMConfiguration  {
         this.proxyMode = proxyMode;
     }
 
+    /**
+    * This property becomes only applicable if the proxy-mode config is set to false
+    **/
+    public InboundSCIMProvisioningConfiguration provisioningUserstoreDomain(String provisioningUserstoreDomain) {
+
+        this.provisioningUserstoreDomain = provisioningUserstoreDomain;
+        return this;
+    }
+    
+    @ApiModelProperty(example = "PRIMARY", value = "This property becomes only applicable if the proxy-mode config is set to false")
+    @JsonProperty("provisioningUserstoreDomain")
+    @Valid
+    public String getProvisioningUserstoreDomain() {
+        return provisioningUserstoreDomain;
+    }
+    public void setProvisioningUserstoreDomain(String provisioningUserstoreDomain) {
+        this.provisioningUserstoreDomain = provisioningUserstoreDomain;
+    }
+
 
 
     @Override
@@ -81,24 +81,24 @@ public class InboundProvisioningSCIMConfiguration  {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InboundProvisioningSCIMConfiguration inboundProvisioningSCIMConfiguration = (InboundProvisioningSCIMConfiguration) o;
-        return Objects.equals(this.provisioningUserstoreDomain, inboundProvisioningSCIMConfiguration.provisioningUserstoreDomain) &&
-            Objects.equals(this.proxyMode, inboundProvisioningSCIMConfiguration.proxyMode);
+        InboundSCIMProvisioningConfiguration inboundSCIMProvisioningConfiguration = (InboundSCIMProvisioningConfiguration) o;
+        return Objects.equals(this.proxyMode, inboundSCIMProvisioningConfiguration.proxyMode) &&
+            Objects.equals(this.provisioningUserstoreDomain, inboundSCIMProvisioningConfiguration.provisioningUserstoreDomain);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(provisioningUserstoreDomain, proxyMode);
+        return Objects.hash(proxyMode, provisioningUserstoreDomain);
     }
 
     @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("class InboundProvisioningSCIMConfiguration {\n");
+        sb.append("class InboundSCIMProvisioningConfiguration {\n");
         
-        sb.append("    provisioningUserstoreDomain: ").append(toIndentedString(provisioningUserstoreDomain)).append("\n");
         sb.append("    proxyMode: ").append(toIndentedString(proxyMode)).append("\n");
+        sb.append("    provisioningUserstoreDomain: ").append(toIndentedString(provisioningUserstoreDomain)).append("\n");
         sb.append("}");
         return sb.toString();
     }

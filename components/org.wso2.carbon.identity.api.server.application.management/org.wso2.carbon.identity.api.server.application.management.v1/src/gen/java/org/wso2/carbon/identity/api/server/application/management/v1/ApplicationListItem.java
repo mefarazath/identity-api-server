@@ -34,7 +34,8 @@ public class ApplicationListItem  {
     private String name;
     private String description;
     private String image;
-    private String location;
+    private String loginUrl;
+    private String self;
 
     /**
     **/
@@ -110,20 +111,38 @@ public class ApplicationListItem  {
 
     /**
     **/
-    public ApplicationListItem location(String location) {
+    public ApplicationListItem loginUrl(String loginUrl) {
 
-        this.location = location;
+        this.loginUrl = loginUrl;
         return this;
     }
     
-    @ApiModelProperty(example = "https://iam.example.com/t/wso2.com/api/server/v1/applications/85e3f4b8-0d22-4181-b1e3-1651f71b88bd", value = "")
-    @JsonProperty("location")
+    @ApiModelProperty(example = "https://example.com/app/login", value = "")
+    @JsonProperty("loginUrl")
     @Valid
-    public String getLocation() {
-        return location;
+    public String getLoginUrl() {
+        return loginUrl;
     }
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
+    }
+
+    /**
+    **/
+    public ApplicationListItem self(String self) {
+
+        this.self = self;
+        return this;
+    }
+    
+    @ApiModelProperty(example = "/t/wso2.com/api/server/v1/applications/85e3f4b8-0d22-4181-b1e3-1651f71b88bd", value = "")
+    @JsonProperty("self")
+    @Valid
+    public String getSelf() {
+        return self;
+    }
+    public void setSelf(String self) {
+        this.self = self;
     }
 
 
@@ -142,12 +161,13 @@ public class ApplicationListItem  {
             Objects.equals(this.name, applicationListItem.name) &&
             Objects.equals(this.description, applicationListItem.description) &&
             Objects.equals(this.image, applicationListItem.image) &&
-            Objects.equals(this.location, applicationListItem.location);
+            Objects.equals(this.loginUrl, applicationListItem.loginUrl) &&
+            Objects.equals(this.self, applicationListItem.self);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, image, location);
+        return Objects.hash(id, name, description, image, loginUrl, self);
     }
 
     @Override
@@ -160,7 +180,8 @@ public class ApplicationListItem  {
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    image: ").append(toIndentedString(image)).append("\n");
-        sb.append("    location: ").append(toIndentedString(location)).append("\n");
+        sb.append("    loginUrl: ").append(toIndentedString(loginUrl)).append("\n");
+        sb.append("    self: ").append(toIndentedString(self)).append("\n");
         sb.append("}");
         return sb.toString();
     }

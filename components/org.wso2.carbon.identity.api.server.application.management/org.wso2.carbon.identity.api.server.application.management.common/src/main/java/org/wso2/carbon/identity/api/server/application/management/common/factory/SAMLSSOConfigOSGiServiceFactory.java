@@ -17,15 +17,15 @@ package org.wso2.carbon.identity.api.server.application.management.common.factor
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.security.sts.service.STSAdminServiceInterface;
+import org.wso2.carbon.identity.sso.saml.SAMLSSOConfigServiceImpl;
 
 /**
  * Factory Beans serves as a factory for creating other beans within the IOC container. This factory bean is used to
- * instantiate the OAuthAdminServiceImpl type of object inside the container.
+ * instantiate the SAMLSSOConfigService type of object inside the container.
  */
-public class STSAdminOSGiServiceFactory extends AbstractFactoryBean<STSAdminServiceInterface> {
+public class SAMLSSOConfigOSGiServiceFactory extends AbstractFactoryBean<SAMLSSOConfigServiceImpl> {
 
-    private STSAdminServiceInterface stsAdminService;
+    private SAMLSSOConfigServiceImpl samlssoConfigService;
 
     @Override
     public Class<?> getObjectType() {
@@ -34,20 +34,19 @@ public class STSAdminOSGiServiceFactory extends AbstractFactoryBean<STSAdminServ
     }
 
     @Override
-    protected STSAdminServiceInterface createInstance() throws Exception {
+    protected SAMLSSOConfigServiceImpl createInstance() throws Exception {
 
-        if (this.stsAdminService == null) {
-            STSAdminServiceInterface stsAdminService =
-                    (STSAdminServiceInterface) PrivilegedCarbonContext.getThreadLocalCarbonContext()
-                            .getOSGiService(STSAdminServiceInterface.class, null);
+        if (this.samlssoConfigService == null) {
+            SAMLSSOConfigServiceImpl samlssoConfigService =
+                    (SAMLSSOConfigServiceImpl) PrivilegedCarbonContext.getThreadLocalCarbonContext()
+                            .getOSGiService(SAMLSSOConfigServiceImpl.class, null);
 
-            if (stsAdminService != null) {
-                this.stsAdminService = stsAdminService;
+            if (samlssoConfigService != null) {
+                this.samlssoConfigService = samlssoConfigService;
             } else {
-                throw new Exception("Unable to retrieve STSAdminService.");
+                throw new Exception("Unable to retrieve SAMLSSOConfigService.");
             }
         }
-        return this.stsAdminService;
+        return this.samlssoConfigService;
     }
-
 }

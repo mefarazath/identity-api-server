@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import org.wso2.carbon.identity.api.server.application.management.v1.InboundProvisioningConfiguration;
+import org.wso2.carbon.identity.api.server.application.management.v1.InboundSCIMProvisioningConfiguration;
 import org.wso2.carbon.identity.api.server.application.management.v1.OutboundProvisioningConfiguration;
 import javax.validation.constraints.*;
 
@@ -34,13 +34,13 @@ import javax.xml.bind.annotation.*;
 
 public class ProvisioningConfiguration  {
   
-    private InboundProvisioningConfiguration inboundProvisioning;
-    private List<OutboundProvisioningConfiguration> outboundProvisioning = null;
+    private InboundSCIMProvisioningConfiguration inboundProvisioning;
+    private List<OutboundProvisioningConfiguration> outboundProvisioningIdps = null;
 
 
     /**
     **/
-    public ProvisioningConfiguration inboundProvisioning(InboundProvisioningConfiguration inboundProvisioning) {
+    public ProvisioningConfiguration inboundProvisioning(InboundSCIMProvisioningConfiguration inboundProvisioning) {
 
         this.inboundProvisioning = inboundProvisioning;
         return this;
@@ -49,36 +49,36 @@ public class ProvisioningConfiguration  {
     @ApiModelProperty(value = "")
     @JsonProperty("inboundProvisioning")
     @Valid
-    public InboundProvisioningConfiguration getInboundProvisioning() {
+    public InboundSCIMProvisioningConfiguration getInboundProvisioning() {
         return inboundProvisioning;
     }
-    public void setInboundProvisioning(InboundProvisioningConfiguration inboundProvisioning) {
+    public void setInboundProvisioning(InboundSCIMProvisioningConfiguration inboundProvisioning) {
         this.inboundProvisioning = inboundProvisioning;
     }
 
     /**
     **/
-    public ProvisioningConfiguration outboundProvisioning(List<OutboundProvisioningConfiguration> outboundProvisioning) {
+    public ProvisioningConfiguration outboundProvisioningIdps(List<OutboundProvisioningConfiguration> outboundProvisioningIdps) {
 
-        this.outboundProvisioning = outboundProvisioning;
+        this.outboundProvisioningIdps = outboundProvisioningIdps;
         return this;
     }
     
     @ApiModelProperty(value = "")
-    @JsonProperty("outboundProvisioning")
+    @JsonProperty("outboundProvisioningIdps")
     @Valid
-    public List<OutboundProvisioningConfiguration> getOutboundProvisioning() {
-        return outboundProvisioning;
+    public List<OutboundProvisioningConfiguration> getOutboundProvisioningIdps() {
+        return outboundProvisioningIdps;
     }
-    public void setOutboundProvisioning(List<OutboundProvisioningConfiguration> outboundProvisioning) {
-        this.outboundProvisioning = outboundProvisioning;
+    public void setOutboundProvisioningIdps(List<OutboundProvisioningConfiguration> outboundProvisioningIdps) {
+        this.outboundProvisioningIdps = outboundProvisioningIdps;
     }
 
-    public ProvisioningConfiguration addOutboundProvisioningItem(OutboundProvisioningConfiguration outboundProvisioningItem) {
-        if (this.outboundProvisioning == null) {
-            this.outboundProvisioning = new ArrayList<>();
+    public ProvisioningConfiguration addOutboundProvisioningIdpsItem(OutboundProvisioningConfiguration outboundProvisioningIdpsItem) {
+        if (this.outboundProvisioningIdps == null) {
+            this.outboundProvisioningIdps = new ArrayList<>();
         }
-        this.outboundProvisioning.add(outboundProvisioningItem);
+        this.outboundProvisioningIdps.add(outboundProvisioningIdpsItem);
         return this;
     }
 
@@ -95,12 +95,12 @@ public class ProvisioningConfiguration  {
         }
         ProvisioningConfiguration provisioningConfiguration = (ProvisioningConfiguration) o;
         return Objects.equals(this.inboundProvisioning, provisioningConfiguration.inboundProvisioning) &&
-            Objects.equals(this.outboundProvisioning, provisioningConfiguration.outboundProvisioning);
+            Objects.equals(this.outboundProvisioningIdps, provisioningConfiguration.outboundProvisioningIdps);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(inboundProvisioning, outboundProvisioning);
+        return Objects.hash(inboundProvisioning, outboundProvisioningIdps);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class ProvisioningConfiguration  {
         sb.append("class ProvisioningConfiguration {\n");
         
         sb.append("    inboundProvisioning: ").append(toIndentedString(inboundProvisioning)).append("\n");
-        sb.append("    outboundProvisioning: ").append(toIndentedString(outboundProvisioning)).append("\n");
+        sb.append("    outboundProvisioningIdps: ").append(toIndentedString(outboundProvisioningIdps)).append("\n");
         sb.append("}");
         return sb.toString();
     }

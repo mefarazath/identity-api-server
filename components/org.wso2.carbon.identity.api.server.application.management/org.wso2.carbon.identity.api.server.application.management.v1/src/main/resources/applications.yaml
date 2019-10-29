@@ -94,10 +94,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Application'
+              $ref: '#/components/schemas/ApplicationModel'
           application/xml:
             schema:
-              $ref: '#/components/schemas/Application'
+              $ref: '#/components/schemas/ApplicationModel'
         description: This represents the application to be created.
         required: true
       responses:
@@ -111,7 +111,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Application'
+                $ref: '#/components/schemas/ApplicationModel'
         '400':
           description: Bad Request
           content:
@@ -168,10 +168,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Application'
+                $ref: '#/components/schemas/ApplicationModel'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Application'
+                $ref: '#/components/schemas/ApplicationModel'
         '400':
           description: Bad Request
           content:
@@ -246,7 +246,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Application'
+                $ref: '#/components/schemas/ApplicationModel'
         '400':
           description: Bad Request
           content:
@@ -284,7 +284,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Application'
+              $ref: '#/components/schemas/ApplicationModel'
         description: This represents the application to be updated.
         required: true
     delete:
@@ -2649,7 +2649,10 @@ components:
       name: filter
       required: false
       description: |
-        Condition to filter the retrival of records.
+        Condition to filter the retrival of records. Supports 'sw', 'co', 'ew' and 'eq' operations. Currently supports only filtering based on the 'name' attribute.
+
+        /applications?filter=name+eq+user_portal
+        /applications?filter=name+co+prod
       schema:
         type: string
     sortOrderQueryParam:
@@ -2745,11 +2748,14 @@ components:
         image:
           type: string
           example: 'https://example.com/logo/my-logo.png'
-        location:
+        loginUrl:
           type: string
-          example: "https://iam.example.com/t/wso2.com/api/server/v1/applications/85e3f4b8-0d22-4181-b1e3-1651f71b88bd"
+          example: 'https://example.com/app/login'
+        self:
+          type: string
+          example: "/t/wso2.com/api/server/v1/applications/85e3f4b8-0d22-4181-b1e3-1651f71b88bd"
 
-    Application:
+    ApplicationModel:
       type: object
       required:
         - name
@@ -2764,12 +2770,12 @@ components:
         description:
           type: string
           example: This is the configuration for Pickup application.
-        homePage:
-          type: string
-          example: 'https://example.com'
-        image:
+        imageUrl:
           type: string
           example: 'https://example.com/logo/my-logo.png'
+        loginUrl:
+          type: string
+          example: 'https://example.com/login'
         claimConfiguration:
           $ref: '#/components/schemas/ClaimConfiguration'
         inboundProtocolConfiguration:
@@ -2791,28 +2797,36 @@ components:
       type: object
       properties:
         inboundProvisioning:
-          $ref: '#/components/schemas/InboundProvisioningConfiguration'
-        outboundProvisioning:
+          $ref: '#/components/schemas/InboundSCIMProvisioningConfiguration'
+        outboundProvisioningIdps:
           type: array
           items:
             $ref: '#/components/schemas/OutboundProvisioningConfiguration'
-    InboundProvisioningConfiguration:
+    InboundSCIMProvisioningConfiguration:
       type: object
       properties:
-        scimConfiguration:
-          $ref: '#/components/schemas/InboundProvisioningSCIMConfiguration'
-    InboundProvisioningSCIMConfiguration:
-      type: object
-      properties:
+        proxy-mode:
+          type: boolean
+          example: false
         provisioningUserstoreDomain:
           type: string
           example: PRIMARY
           description: >-
             This property becomes only applicable if the proxy-mode config is
             set to false
-        proxy-mode:
-          type: boolean
-          example: false
+
+    # InboundProvisioningSCIMConfiguration:
+    #   type: object
+    #   properties:
+    #     provisioningUserstoreDomain:
+    #       type: string
+    #       example: PRIMARY
+    #       description: >-
+    #         This property becomes only applicable if the proxy-mode config is
+    #         set to false
+    #     proxy-mode:
+    #       type: boolean
+    #       example: false
     OutboundProvisioningConfiguration:
       type: object
       properties:

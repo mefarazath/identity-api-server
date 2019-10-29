@@ -29,15 +29,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Mapper function.
  */
-public class OAuthConsumerAppToModel implements Function<OAuthConsumerAppDTO, OpenIDConnectConfiguration> {
+public class OAuthConsumerAppToExternalModel implements Converter<OAuthConsumerAppDTO, OpenIDConnectConfiguration> {
 
     @Override
-    public OpenIDConnectConfiguration apply(OAuthConsumerAppDTO oauthAppDTO) {
+    public OpenIDConnectConfiguration convert(OAuthConsumerAppDTO oauthAppDTO) {
 
         return new OpenIDConnectConfiguration()
                 .clientId(oauthAppDTO.getOauthConsumerKey())

@@ -16,19 +16,31 @@
 package org.wso2.carbon.identity.api.server.application.management.v1.core.functions;
 
 import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationListItem;
+import org.wso2.carbon.identity.api.server.common.Constants;
 import org.wso2.carbon.identity.application.common.model.ApplicationBasicInfo;
+
+import static org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementConstants.APPLICATION_MANAGEMENT_PATH_COMPONENT;
 
 /**
  *
  */
-public class ApplicationBasicInfoToModel implements Converter<ApplicationBasicInfo, ApplicationListItem> {
+public class ApplicationBasicInfoToExternalModel
+        implements Converter<ApplicationBasicInfo, ApplicationListItem> {
 
     @Override
     public ApplicationListItem convert(ApplicationBasicInfo applicationBasicInfo) {
 
         return new ApplicationListItem()
-                .id(String.valueOf(applicationBasicInfo.getApplicationId()))
+                .id(applicationBasicInfo.getApplicationResourceId())
+                .name(applicationBasicInfo.getApplicationName())
                 .description(applicationBasicInfo.getDescription())
-                .name(applicationBasicInfo.getApplicationName());
+                .image(applicationBasicInfo.getImageUrl())
+                .loginUrl(applicationBasicInfo.getLoginUrl())
+                .self(getApplicationLocation(applicationBasicInfo.getApplicationResourceId()));
+    }
+
+    private String getApplicationLocation(String resourceId) {
+
+        return Constants.V1_API_PATH_COMPONENT + APPLICATION_MANAGEMENT_PATH_COMPONENT + "/" + resourceId;
     }
 }

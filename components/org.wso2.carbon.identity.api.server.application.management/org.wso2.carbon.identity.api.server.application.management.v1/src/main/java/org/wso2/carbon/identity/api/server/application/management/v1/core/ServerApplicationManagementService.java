@@ -18,25 +18,30 @@ package org.wso2.carbon.identity.api.server.application.management.v1.core;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementConstants.ErrorMessage;
 import org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementServiceHolder;
-import org.wso2.carbon.identity.api.server.application.management.v1.Application;
 import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationListItem;
 import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationListResponse;
+import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationModel;
 import org.wso2.carbon.identity.api.server.application.management.v1.Link;
-import org.wso2.carbon.identity.api.server.application.management.v1.core.functions.ApplicationBasicInfoToModel;
-import org.wso2.carbon.identity.api.server.application.management.v1.core.functions.ServiceProviderToExternalModel;
+import org.wso2.carbon.identity.api.server.application.management.v1.core.functions.ApplicationBasicInfoToExternalModel;
+import org.wso2.carbon.identity.api.server.application.management.v1.core.functions.ApplicationToExternalModel;
+import org.wso2.carbon.identity.api.server.application.management.v1.core.functions.ExternalModelToApplication;
 import org.wso2.carbon.identity.api.server.common.ContextLoader;
 import org.wso2.carbon.identity.api.server.common.error.APIError;
 import org.wso2.carbon.identity.api.server.common.error.ErrorResponse;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.ApplicationBasicInfo;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
+import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.ws.rs.core.Response;
+
+import static org.wso2.carbon.identity.api.server.application.management.common.ApplicationManagementConstants.ErrorMessage.ERROR_CODE_UNSUPPORTED_FILTER_OPERATION;
 
 /**
  * Calls internal osgi services to perform server application management related operations.
@@ -46,7 +51,6 @@ public class ServerApplicationManagementService {
     private static final Log LOG = LogFactory.getLog(ServerApplicationManagementService.class);
 
     private static final List<String> SEARCH_SUPPORTED_FIELDS = new ArrayList<>();
-
     private static final String APP_NAME = "name";
 
     // Filter related constants.
@@ -55,74 +59,97 @@ public class ServerApplicationManagementService {
     private static final String FILTER_EQUALS = "eq";
     private static final String FILTER_CONTAINS = "co";
 
+    // TODO: should we read this from somewhere...
+    private static final int DEFAULT_LIMIT = 20;
+    private static final int DEFAULT_LIMIT_MAX = 50;
+
     static {
         SEARCH_SUPPORTED_FIELDS.add(APP_NAME);
     }
 
-    public ApplicationListResponse getAllApplications(Integer limit,
-                                                      Integer offset,
-                                                      String filter,
-                                                      String sortOrder,
-                                                      String sortBy,
-                                                      String requiredAttributes) {
+    public ApplicationListResponse getAllApplications(Integer limit, Integer offset, String filter, String sortOrder,
+                                                      String sortBy, String requiredAttributes) {
 
-        limit = limit != null ? limit : 10;
-        offset = offset != null ? offset : 0;
-        filter = buildFilter(filter);
+        handleNotImplementedCapabilities(sortBy, sortOrder, requiredAttributes);
 
-        // TODO handle unsupported attributes.
-        ApplicationListResponse applicationListResponse = new ApplicationListResponse();
+        limit = (limit != null && limit > 0 && limit < DEFAULT_LIMIT_MAX) ? limit : DEFAULT_LIMIT;
+        offset = (offset != null && offset > 0) ? offset : 0;
+
+        // Format the filter to a value that can be interpreted by the backend.
+        String formattedFilter = buildFilter(filter);
         try {
             String username = ContextLoader.getUsernameFromContext();
             String tenantDomain = ContextLoader.getTenantDomainFromContext();
 
-            int totalApps = ApplicationManagementServiceHolder
-                    .getApplicationManagementService().getCountOfApplications(tenantDomain, username, filter);
+            int totalResultsFromFiltering = getApplicationManagementService()
+                    .getCountOfApplications(tenantDomain, username, formattedFilter);
 
-            ApplicationBasicInfo[] filteredAppList =
-                    ApplicationManagementServiceHolder.getApplicationManagementService()
-                            .getApplicationBasicInfo(tenantDomain, username, filter, offset, limit);
+            ApplicationBasicInfo[] filteredAppList = getApplicationManagementService()
+                    .getApplicationBasicInfo(tenantDomain, username, formattedFilter, offset, limit);
+            int resultsInCurrentPage = filteredAppList.length;
 
-            return applicationListResponse.totalResults(totalApps)
+            return new ApplicationListResponse()
+                    .totalResults(totalResultsFromFiltering)
                     .startIndex(offset)
-                    .count(filteredAppList.length)
+                    .count(resultsInCurrentPage)
                     .applications(getApplicationListItems(filteredAppList))
-                    .links(buildLinks(limit, offset, filter, totalApps));
+                    .links(buildLinks(limit, offset, filter, totalResultsFromFiltering));
 
         } catch (IdentityApplicationManagementException e) {
             throw handleServerError(e, "Error while retrieving all applications.");
         }
     }
 
-    private List<Link> buildLinks(int limit, int offset, String filter, int totalApps) {
+    public ApplicationModel getApplication(String applicationId) {
 
-        List<Link> links = new ArrayList<>();
-
-        // Prev
-        // Next
-        // First
-        // Last
-        // If this is the first page, it will have “next” and “last” links only.
-        // If this is the last page, it will have “previous” and “first” links only.
-
-        return links;
-    }
-
-    public Application getApplication(String applicationId) {
-
-        int id = Integer.parseInt(applicationId);
         try {
-            ServiceProvider serviceProvider =
-                    ApplicationManagementServiceHolder.getApplicationManagementService().getServiceProvider(id);
-
-            if (serviceProvider == null) {
-                throw handleApplicationNotFoundException();
+            String tenantDomain = ContextLoader.getTenantDomainFromContext();
+            ServiceProvider application =
+                    getApplicationManagementService().getApplicationByResourceId(applicationId, tenantDomain);
+            if (application == null) {
+                throw buildApiError(ErrorMessage.ERROR_CODE_APPLICATION_NOT_FOUND, applicationId, tenantDomain);
             }
-
-            return new ServiceProviderToExternalModel().convert(serviceProvider);
+            return new ApplicationToExternalModel().convert(application);
         } catch (IdentityApplicationManagementException e) {
             throw handleServerError(e, "Error while retrieving application with id: " + applicationId);
         }
+    }
+
+    public void deleteApplication(String applicationId) {
+
+        String tenantDomain = ContextLoader.getTenantDomainFromContext();
+        try {
+            getApplicationManagementService().deleteApplicationByResourceId(applicationId, tenantDomain);
+        } catch (IdentityApplicationManagementException e) {
+            throw handleServerError(e, "Error while deleting application with applicationId:" + applicationId);
+        }
+    }
+
+    public void updateApplication(String applicationId, ApplicationModel applicationModel) {
+
+        String tenantDomain = ContextLoader.getTenantDomainFromContext();
+        try {
+            ServiceProvider updatedApp = new ExternalModelToApplication().convert(applicationModel);
+            getApplicationManagementService().updateApplicationByResourceId(applicationId, tenantDomain, updatedApp);
+        } catch (IdentityApplicationManagementException e) {
+            throw handleServerError(e, "Error while updating application with applicationId:" + applicationId);
+        }
+    }
+
+    public String createApplication(ApplicationModel applicationModel) {
+
+        String tenantDomain = ContextLoader.getTenantDomainFromContext();
+        try {
+            ServiceProvider application = new ExternalModelToApplication().convert(applicationModel);
+            return getApplicationManagementService().createApplication(application, tenantDomain);
+        } catch (IdentityApplicationManagementException e) {
+            throw handleServerError(e, "Error while updating application with name:" + applicationModel.getName());
+        }
+    }
+
+    private List<Link> buildLinks(int limit, int currentOffset, String filter, int totalResultsFromSearch) {
+
+        return new ArrayList<>();
     }
 
     private APIError handleServerError(Exception e, String message) {
@@ -134,28 +161,10 @@ public class ServerApplicationManagementService {
         return new APIError(status, errorResponse);
     }
 
-    private APIError handleApplicationNotFoundException() {
-
-        ErrorResponse.Builder builder = new ErrorResponse.Builder();
-        ErrorResponse errorResponse = builder.build(LOG, null, "Resource not found.");
-
-        Response.Status status = Response.Status.NOT_FOUND;
-        return new APIError(status, errorResponse);
-    }
-
-    private APIError buildBadRequestException(String message) {
-
-        ErrorResponse.Builder builder = new ErrorResponse.Builder();
-        ErrorResponse errorResponse = builder.build(LOG, null, message);
-
-        Response.Status status = Response.Status.BAD_REQUEST;
-        return new APIError(status, errorResponse);
-    }
-
     private List<ApplicationListItem> getApplicationListItems(ApplicationBasicInfo[] allApplicationBasicInfo) {
 
         return Arrays.stream(allApplicationBasicInfo)
-                .map(new ApplicationBasicInfoToModel())
+                .map(new ApplicationBasicInfoToExternalModel())
                 .collect(Collectors.toList());
     }
 
@@ -164,19 +173,17 @@ public class ServerApplicationManagementService {
         if (StringUtils.isNotBlank(filter)) {
             String[] filterArgs = filter.split(" ");
             if (filterArgs.length == 3) {
-
                 String searchField = filterArgs[0];
                 if (SEARCH_SUPPORTED_FIELDS.contains(searchField)) {
                     String searchOperation = filterArgs[1];
                     String searchValue = filterArgs[2];
                     return generateFilterStringForBackend(searchField, searchOperation, searchValue);
                 } else {
-                    // throw error;
-                    throw buildBadRequestException("Unsupported search field: " + searchField);
+                    throw buildApiError(ErrorMessage.ERROR_CODE_UNSUPPORTED_FILTER_ATTRIBUTE, searchField);
                 }
 
             } else {
-                throw buildBadRequestException("Invalid filter string");
+                throw buildApiError(ErrorMessage.ERROR_CODE_INVALID_FILTER_FORMAT);
             }
         } else {
             return null;
@@ -202,10 +209,61 @@ public class ServerApplicationManagementService {
                 formattedFilter = "*" + searchValue + "*";
                 break;
             default:
-                throw buildBadRequestException("Unsupported filter operation: " + searchOperation);
+                throw buildApiError(ERROR_CODE_UNSUPPORTED_FILTER_OPERATION, searchOperation);
         }
 
         return formattedFilter;
     }
 
+    private ApplicationManagementService getApplicationManagementService() {
+
+        return ApplicationManagementServiceHolder.getApplicationManagementService();
+    }
+
+    private void handleNotImplementedCapabilities(String sortOrder, String sortBy, String requiredAttributes) {
+
+        ErrorMessage errorEnum = null;
+
+        if (sortBy != null || sortOrder != null) {
+            errorEnum = ErrorMessage.ERROR_CODE_SORTING_NOT_IMPLEMENTED;
+        } else if (requiredAttributes != null) {
+            errorEnum = ErrorMessage.ERROR_CODE_ATTRIBUTE_FILTERING_NOT_IMPLEMENTED;
+        }
+
+        if (errorEnum != null) {
+            throw buildApiError(errorEnum);
+        }
+    }
+
+    private APIError buildApiError(ErrorMessage errorEnum) {
+
+        ErrorResponse errorResponse = buildErrorResponse(errorEnum);
+        return new APIError(errorEnum.getHttpStatusCode(), errorResponse);
+    }
+
+    private APIError buildApiError(ErrorMessage errorEnum,
+                                   String... errorContextData) {
+
+        ErrorResponse errorResponse = buildErrorResponse(errorEnum, errorContextData);
+        return new APIError(errorEnum.getHttpStatusCode(), errorResponse);
+    }
+
+    private ErrorResponse buildErrorResponse(ErrorMessage errorEnum,
+                                             String... errorContextData) {
+
+        return new ErrorResponse.Builder()
+                .withCode(errorEnum.getCode())
+                .withDescription(buildFormattedDescription(errorEnum.getDescription(), errorContextData))
+                .withMessage(errorEnum.getMessage())
+                .build(LOG, errorEnum.getDescription());
+    }
+
+    private String buildFormattedDescription(String description, String... formatData) {
+
+        if (formatData != null) {
+            return String.format(description, formatData);
+        } else {
+            return description;
+        }
+    }
 }

@@ -2,7 +2,7 @@ package org.wso2.carbon.identity.api.server.application.management.v1.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.wso2.carbon.identity.api.server.application.management.v1.AdvancedApplicationConfiguration;
-import org.wso2.carbon.identity.api.server.application.management.v1.Application;
+import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationModel;
 import org.wso2.carbon.identity.api.server.application.management.v1.ApplicationsApiService;
 import org.wso2.carbon.identity.api.server.application.management.v1.AuthenticationSequence;
 import org.wso2.carbon.identity.api.server.application.management.v1.ClaimConfiguration;
@@ -42,19 +42,30 @@ public class ApplicationsApiServiceImpl implements ApplicationsApiService {
     }
 
     @Override
-    public Response createApplication(Application application, String template) {
+    public Response createApplication(ApplicationModel applicationModel, String template) {
 
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
-    }
-
-    @Override
-    public Response deleteAdvancedConfigurations(String applicationId) {
-
+//        String resourceId = applicationManagementService.createApplication(applicationModel);
+//        return Response.created(getResourceLocation(resourceId)).build();
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
     @Override
     public Response deleteApplication(String applicationId) {
+
+        applicationManagementService.deleteApplication(applicationId);
+        return Response.noContent().build();
+    }
+
+    @Override
+    public Response updateApplication(String applicationId, ApplicationModel applicationModel) {
+
+//        applicationManagementService.updateApplication(applicationId, applicationModel);
+//        return Response.noContent().build();
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    }
+
+    @Override
+    public Response deleteAdvancedConfigurations(String applicationId) {
 
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
@@ -199,12 +210,6 @@ public class ApplicationsApiServiceImpl implements ApplicationsApiService {
     }
 
     @Override
-    public Response updateApplication(String applicationId, Application application) {
-
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
-    }
-
-    @Override
     public Response updateAuthenticationSequence(String applicationId, AuthenticationSequence authenticationSequence) {
 
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
@@ -268,4 +273,10 @@ public class ApplicationsApiServiceImpl implements ApplicationsApiService {
 
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
+
+//    private URI getResourceLocation(String resourceId) {
+//
+//        return buildURIForHeader(Constants.V1_API_PATH_COMPONENT + APPLICATION_MANAGEMENT_PATH_COMPONENT
+//                + "/" + resourceId);
+//    }
 }
