@@ -18,16 +18,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean class="org.wso2.identity.cloud.server.theme.mgt.v1.core.ServerThemeManagementService"/>
-    <bean class="org.wso2.identity.cloud.server.theme.mgt.v1.impl.ThemeApiServiceImpl"/>
+    <bean class="org.wso2.carbon.identity.api.server.branding.preference.management.v1.core.ServerThemeManagementService"/>
+    <bean class="org.wso2.carbon.identity.api.server.branding.preference.management.v1.impl.ThemeApiServiceImpl"/>
 
 
     <bean id="themeManagementServiceFactoryBean"
-          class="org.wso2.identity.cloud.server.theme.mgt.common.factory.ThemeManagementOSGiServiceFactory"/>
+          class="org.wso2.carbon.identity.api.server.branding.preference.management.common.factory.ThemeManagementOSGiServiceFactory"/>
 
 
     <bean id="themeManagementServiceHolderBean"
-          class="org.wso2.identity.cloud.server.theme.mgt.common.ThemeManagementServiceHolder">
+          class="org.wso2.carbon.identity.api.server.branding.preference.management.common.ThemeManagementServiceHolder">
         <property name="themeManagementService" ref="themeManagementServiceFactoryBean"/>
     </bean>
 

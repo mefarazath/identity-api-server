@@ -552,6 +552,7 @@
         <module>components/org.wso2.carbon.identity.api.server.oidc.scope.management</module>
         <module>components/org.wso2.carbon.identity.api.server.configs</module>
         <module>components/org.wso2.carbon.identity.api.server.tenant.management</module>
+        <module>components/org.wso2.carbon.identity.api.server.branding.preference.management</module>
     </modules>
 
 </project>
