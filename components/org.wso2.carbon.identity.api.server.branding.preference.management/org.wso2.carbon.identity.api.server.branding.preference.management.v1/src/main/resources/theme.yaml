@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: WSO2 Identity Server - Tenant Theme API
+  description: >-
+    This is the RESTful API for managing Branding for Tenant in WSO2 Identity Server.
+  contact:
+    name: WSO2 Identity Server
+    url: 'https://wso2.com/identity-and-access-management/'
+    email: architecture@wso2.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+security:
+  - OAuth2: []
+  - BasicAuth: []
+
+paths:
+  '/theme':
+    get:
+      tags:
+        - Theme
+      summary: Get theme preference.
+      operationId: getTheme
+      description: |
+        Retrieve tenant using the tenant ID.
+
+        <b>Permission required:</b>
+        * /permission/protected/manage/monitor/tenants
+
+        <b>scope required:</b>
+        *
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TenantPreferenceModel'
+        '400':
+          $ref: '#/components/responses/InvalidInput'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      tags:
+        - Theme
+      summary: Update theme preferences.
+      operationId: updateTheme
+      description: |
+        This API activates/deactivates the specified tenant.
+
+        <b>Permission required:</b>
+        * /permission/protected/manage/modify/tenants
+
+        <b>scope required:</b>
+        * internal_modify_tenants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantPreferenceModel'
+        description: This represents the tenant to be updated.
+        required: true
+      responses:
+        '200' :
+          description: Successfully updated
+        '400':
+          $ref: '#/components/responses/InvalidInput'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  parameters:
+    tenantIdPathParam:
+      in: path
+      name: tenant-id
+      required: true
+      description: tenant id
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: The specified resource is not found
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized
+    Forbidden:
+      description: Resource Forbidden
+    ServerError:
+      description: Internal Server Error
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/Error'
+    InvalidInput:
+      description: Invalid Input Request
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Element Already Exists
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deleted:
+      description: No Content
+    Updated:
+      description: Successful
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://localhost:9443/oauth2/authorize'
+          tokenUrl: 'https://localhost:9443/oauth2/token'
+          scopes: {}
+  schemas:
+    TenantPreferenceModel:
+      type: object
+      properties:
+        logo:
+          type: string
+          example: abc.com
+          description: Tenant domain of the tenant.
+        favicon:
+          type: string
+          example: abc.com
+          description: Tenant domain of the tenant.
+
+        primaryColor:
+          type: string
+          example: abc.com
+          description: Tenant domain of the tenant.
+        backgroundColor:
+          type: string
+          example: abc.com
+          description: Tenant domain of the tenant.
+        themeFile:
+          type: string
+          example: abc.com
+          description: Tenant domain of the tenant.
+
+        headerText:
+          type: string
+          example: abc.com
+          description: Tenant domain of the tenant.
+        footerText:
+          type: string
+          example: abc.com
+          description: Tenant domain of the tenant.
+        titleText:
+          type: string
+          example: abc.com
+          description: Tenant domain of the tenant.
+
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          example: ETM10001
+        message:
+          type: string
+          example: Some Error Message
+        description:
+          type: string
+          example: Some Error Description
+        traceId:
+          type: string
+          example: 3erfee-232-efewv-2321-43ferfe24r
+
+servers:
+  - url: 'https://{server-url}/t/{tenant-domain}/api/server/v1'
+    variables:
+      server-url:
+        default: "localhost:9443"
+      tenant-domain:
+        default: "carbon.super"
