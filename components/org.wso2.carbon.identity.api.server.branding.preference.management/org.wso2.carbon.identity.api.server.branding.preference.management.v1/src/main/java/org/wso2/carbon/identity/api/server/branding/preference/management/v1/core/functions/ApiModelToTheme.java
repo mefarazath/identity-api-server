@@ -28,14 +28,15 @@ public class ApiModelToTheme implements Function<TenantPreferenceModel, Theme> {
     @Override
     public Theme apply(TenantPreferenceModel apiModel) {
 
-        return new Theme()
-                .withHeaderText(apiModel.getHeaderText())
-                .withFooterText(apiModel.getFooterText())
-                .withTitleText(apiModel.getTitleText())
-                .withLogo(apiModel.getLogo())
-                .withFavicon(apiModel.getFavicon())
-                .withPrimaryColorCode(apiModel.getPrimaryColor())
-                .withBackgroundColorCode(apiModel.getBackgroundColor())
-                .withThemePath(apiModel.getThemeFile());
+        Theme theme = new Theme();
+        theme.setHeaderText(apiModel.getHeaderText());
+        theme.setFooterText(apiModel.getFooterText());
+        theme.setTitleText(apiModel.getTitleText());
+        theme.setLogo(apiModel.getLogo());
+        theme.setFavicon(apiModel.getFavicon());
+        theme.setPrimaryColorCode(apiModel.getPrimaryColor());
+        theme.setBackgroundColorCode(apiModel.getBackgroundColor());
+        theme.setThemePath(apiModel.getThemeFile());
+        return theme;
     }
 }
